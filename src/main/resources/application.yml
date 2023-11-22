@@ -1,24 +1,15 @@
-server:
-  max-http-header-size: 20MB
-  servlet:
-    context-path: /billing-api
-
-
 spring:
-  profiles:
-    active: Local
-
-httpclient:
-  connectionTimeout: 30
-  requestTimeout: 120
-  socketTimeout: 120
-  maxTotalConnections: 100
-  maxRouteConnections: 10
-  defaultKeepAliveTime: 120
-  idleConnectionWaitTime: 120
-
-openapi:
-  title: MYSOLIQ BILLING API
-  version: v3
-  description: MYSOLIQ BILLING API
-
+  datasource:
+    url: jdbc:postgresql://localhost:5432/delivva-authorization
+    username: postgres
+    password: 6040
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+      format_sql: true
+    database: postgresql    
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
