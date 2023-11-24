@@ -157,8 +157,8 @@ databaseChangeLog:
                   name: user_id
                   type: bigint
                   constraints:
-                    - foreignKeyName: fk_vehicle_user
-                    - references: user(id)
+                    foreignKeyName: fk_vehicle_user
+                    references: user(id)
               - column:
                   name: type_id
                   type: int
