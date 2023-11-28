@@ -3,9 +3,9 @@ package com.vention.authorization_service.service.impl;
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserRoleEntity;
+import com.vention.authorization_service.dto.response.UserRegistrationResponse;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.dto.request.UserRegistrationRequest;
-import com.vention.authorization_service.dto.response.GlobalResponse;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
 import com.vention.authorization_service.mapper.UserMapper;
 import com.vention.authorization_service.service.AuthenticationService;
@@ -13,11 +13,9 @@ import com.vention.authorization_service.service.SecurityCredentialService;
 import com.vention.authorization_service.service.UserRoleService;
 import com.vention.authorization_service.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.vention.authorization_service.utils.PropertyReader.ROLE_USER;
@@ -34,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public GlobalResponse registerUser(UserRegistrationRequest request) {
+    public UserRegistrationResponse registerUser(UserRegistrationRequest request) {
         if(!userService.isEmailUnique(request.getEmail())) {
             throw new DuplicateDataException("This email has already been registered!!!");
         }
@@ -42,13 +40,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SecurityCredentialEntity savedCredentials = securityCredentialService.saveCredentials(
                 credentialMapper.mapDataToSecurityCredentials(request.getPassword(), List.of(userRoleEntity))
         );
-        UserEntity user = userMapper.mapRegistrationRequestToUserEntity(request.getEmail(), savedCredentials);
-        userService.saveUser(user);
+        UserEntity savedUser = userService.saveUser(
+                userMapper.mapRegistrationRequestToUserEntity(request.getEmail(), savedCredentials)
+        );
         // Request will be sent to the notification service here to confirm email
-        return GlobalResponse.builder()
-                .status(HttpStatus.CREATED.value())
-                .message("Please confirm your email")
-                .time(ZonedDateTime.now())
+        return UserRegistrationResponse.builder()
+                .id(savedUser.getId())
+                .email(savedUser.getEmail())
+                .firstName(savedUser.getFirstName())
+                .lastName(savedUser.getLastName())
                 .build();
     }
 }

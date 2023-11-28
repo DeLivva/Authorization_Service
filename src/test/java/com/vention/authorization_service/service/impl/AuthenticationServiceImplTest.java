@@ -5,6 +5,7 @@ import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserRoleEntity;
 import com.vention.authorization_service.dto.request.UserRegistrationRequest;
 import com.vention.authorization_service.dto.response.GlobalResponse;
+import com.vention.authorization_service.dto.response.UserRegistrationResponse;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
 import com.vention.authorization_service.mapper.UserMapper;
@@ -61,13 +62,13 @@ class AuthenticationServiceImplTest {
         doReturn(userRoleEntity).when(userRoleService).getRoleByName(any());
         doReturn(credentialEntity).when(securityCredentialService).saveCredentials(any());
         doReturn(userEntity).when(userService).saveUser(any());
-        GlobalResponse globalResponse = authenticationService.registerUser(request);
+        UserRegistrationResponse response = authenticationService.registerUser(request);
         // then
         verify(userService, times(1)).isEmailUnique(any());
         verify(userRoleService, times(1)).getRoleByName(any());
         verify(securityCredentialService, times(1)).saveCredentials(any());
         verify(userService, times(1)).saveUser(any());
-        assertEquals(globalResponse.getStatus(), 201);
+        assertNotNull(response.getId());
     }
 
     @Test
@@ -77,7 +78,7 @@ class AuthenticationServiceImplTest {
         // when
         doReturn(false).when(userService).isEmailUnique(any());
         try {
-            GlobalResponse globalResponse = authenticationService.registerUser(request);
+            authenticationService.registerUser(request);
             fail("Expected exception but exception is not thrown");
         } catch (DuplicateDataException e) {
             assertEquals(e.getMessage(), "This email has already been registered!!!");

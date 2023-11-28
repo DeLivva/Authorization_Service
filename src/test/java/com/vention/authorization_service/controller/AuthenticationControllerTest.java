@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vention.authorization_service.dto.request.UserRegistrationRequest;
 import com.vention.authorization_service.dto.response.GlobalResponse;
+import com.vention.authorization_service.dto.response.UserRegistrationResponse;
 import com.vention.authorization_service.service.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -43,10 +45,10 @@ class AuthenticationControllerTest {
     @Test
     void testRegisterUser() throws Exception {
         // given
-        GlobalResponse globalResponse = mock();
+        UserRegistrationResponse response = mock();
         UserRegistrationRequest request = new UserRegistrationRequest("test@gmail.com", "12345678");
         // when
-        doReturn(globalResponse).when(authenticationService).registerUser(any());
+        doReturn(response).when(authenticationService).registerUser(any());
         String requestBody = objectMapper.writeValueAsString(request);
         // then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/register")
@@ -59,10 +61,10 @@ class AuthenticationControllerTest {
     @Test
     void testRegisterUser2() throws Exception {
         // given
-        GlobalResponse globalResponse = mock();
+        UserRegistrationResponse response = mock();
         UserRegistrationRequest request = new UserRegistrationRequest("test@gmail.com", "1234567891011111");
         // when
-        doReturn(globalResponse).when(authenticationService).registerUser(any());
+        doReturn(response).when(authenticationService).registerUser(any());
         String requestBody = objectMapper.writeValueAsString(request);
         // then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/register")
