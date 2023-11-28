@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
-
+  
     private ResponseEntity<GlobalResponse> getResponse(String message, int status) {
         return ResponseEntity
                 .status(status)
