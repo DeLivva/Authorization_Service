@@ -17,7 +17,3 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
-
-user:
-  roles:
-    user: USER
