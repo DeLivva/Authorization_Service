@@ -1,12 +1,7 @@
 package com.vention.authorization_service.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Entity(name = "security_credentials")
 @Getter
@@ -20,11 +15,7 @@ public class SecurityCredentialEntity extends BaseEntity {
 
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "credential_roles",
-            joinColumns = @JoinColumn(name = "user_credential_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private List<UserRoleEntity> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private UserRoleEntity role;
 }

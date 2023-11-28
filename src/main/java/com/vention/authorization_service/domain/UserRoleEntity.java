@@ -1,6 +1,5 @@
 package com.vention.authorization_service.domain;
 
-import com.vention.authorization_service.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
