@@ -14,8 +14,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     private final UserRoleRepository userRoleRepository;
 
     @Override
-    public UserRoleEntity getRoleByName(String roleName) {
-        return userRoleRepository.findUserRoleEntityByName(roleName).orElseThrow(
+    public UserRoleEntity getByName(String roleName) {
+        return userRoleRepository.findByName(roleName).orElseThrow(
                 () -> new DataNotFoundException(roleName + " role is not found")
         );
     }

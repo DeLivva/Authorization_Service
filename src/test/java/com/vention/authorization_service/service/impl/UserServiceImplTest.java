@@ -2,7 +2,9 @@ package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.repository.UserRepository;
+import com.vention.authorization_service.service.FileService;
 import com.vention.authorization_service.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,13 +33,19 @@ class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private SecurityCredentialRepository securityCredentialRepository;
+
+    @Mock
+    private FileService fileService;
+
     private UserService userService;
 
     private UserEntity testUser;
 
     @BeforeEach
     void setUp() {
-        userService = new UserServiceImpl(userRepository);
+        userService = new UserServiceImpl(userRepository, securityCredentialRepository, fileService);
         testUser = mock();
     }
 
@@ -59,7 +67,7 @@ class UserServiceImplTest {
         // given
         // when
         doReturn(Optional.of(testUser)).when(userRepository).findByEmail(any(String.class));
-        UserEntity userByEmail = userService.getUserByEmail("test");
+        UserEntity userByEmail = userService.getByEmail("test").get();
         // then
         verify(userRepository, times(1)).findByEmail(any());
         assertSame(testUser, userByEmail);
@@ -71,7 +79,7 @@ class UserServiceImplTest {
         // when
         doReturn(Optional.empty()).when(userRepository).findByEmail(any());
         try {
-            userService.getUserByEmail("test");
+            userService.getByEmail("test");
             // then
             fail("Expected exception, but exception is not thrown");
         } catch (DataNotFoundException e) {

@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -42,10 +41,10 @@ class UserRoleServiceImplTest {
     void testGetRoleByName() {
         // given
         // when
-        doReturn(Optional.of(userRoleEntity)).when(userRoleRepository).findUserRoleEntityByName(any());
-        UserRoleEntity roleByName = userRoleService.getRoleByName("test");
+        doReturn(Optional.of(userRoleEntity)).when(userRoleRepository).findByName(any());
+        UserRoleEntity roleByName = userRoleService.getByName("test");
         // then
-        verify(userRoleRepository, times(1)).findUserRoleEntityByName(any());
+        verify(userRoleRepository, times(1)).findByName(any());
         assertSame(roleByName, userRoleEntity);
     }
 
@@ -53,12 +52,12 @@ class UserRoleServiceImplTest {
     void testGetRoleByNameWillThrow() {
         // given
         // when
-        doReturn(Optional.empty()).when(userRoleRepository).findUserRoleEntityByName(any());
+        doReturn(Optional.empty()).when(userRoleRepository).findByName(any());
         try {
-            UserRoleEntity roleByName = userRoleService.getRoleByName("test");
+            UserRoleEntity roleByName = userRoleService.getByName("test");
             fail("Expected exception but exception is not thrown");
         } catch (DataNotFoundException e) {
-            verify(userRoleRepository, times(1)).findUserRoleEntityByName(any());
+            verify(userRoleRepository, times(1)).findByName(any());
             assertEquals(e.getMessage(), "test role is not found");
         }
     }

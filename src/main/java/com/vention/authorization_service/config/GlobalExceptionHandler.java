@@ -1,6 +1,6 @@
 package com.vention.authorization_service.config;
 
-import com.vention.authorization_service.dto.response.GlobalResponse;
+import com.vention.authorization_service.dto.response.GlobalResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,21 +16,21 @@ import java.time.ZonedDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = DataNotFoundException.class)
-    public ResponseEntity<GlobalResponse> apiExceptionHandler(DataNotFoundException e) {
+    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(DataNotFoundException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 
     @ExceptionHandler(value = DuplicateDataException.class)
-    public ResponseEntity<GlobalResponse> apiExceptionHandler(DuplicateDataException e) {
+    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(DuplicateDataException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
   
-    private ResponseEntity<GlobalResponse> getResponse(String message, int status) {
+    private ResponseEntity<GlobalResponseDTO> getResponse(String message, int status) {
         return ResponseEntity
                 .status(status)
-                .body(GlobalResponse.builder()
+                .body(GlobalResponseDTO.builder()
                         .status(status)
                         .message(message)
                         .time(ZonedDateTime.now())

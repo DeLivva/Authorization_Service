@@ -3,8 +3,8 @@ package com.vention.authorization_service.service.impl;
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserRoleEntity;
-import com.vention.authorization_service.dto.request.UserRegistrationRequest;
-import com.vention.authorization_service.dto.response.UserRegistrationResponse;
+import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
+import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
 import com.vention.authorization_service.mapper.UserMapper;
@@ -61,16 +61,16 @@ class AuthenticationServiceImplTest {
         UserRoleEntity userRoleEntity = mock();
         SecurityCredentialEntity credentialEntity = mock();
         UserEntity userEntity = mock();
-        UserRegistrationRequest request = mock();
+        UserRegistrationRequestDTO request = mock();
         // when
         doReturn(true).when(userService).isEmailUnique(any());
-        doReturn(userRoleEntity).when(userRoleService).getRoleByName(any());
+        doReturn(userRoleEntity).when(userRoleService).getByName(any());
         doReturn(credentialEntity).when(securityCredentialService).saveCredentials(any());
         doReturn(userEntity).when(userService).saveUser(any());
-        UserRegistrationResponse response = authenticationService.registerUser(request);
+        UserRegistrationResponseDTO response = authenticationService.registerUser(request);
         // then
         verify(userService, times(1)).isEmailUnique(any());
-        verify(userRoleService, times(1)).getRoleByName(any());
+        verify(userRoleService, times(1)).getByName(any());
         verify(securityCredentialService, times(1)).saveCredentials(any());
         verify(userService, times(1)).saveUser(any());
         assertNotNull(response.getId());
@@ -79,7 +79,7 @@ class AuthenticationServiceImplTest {
     @Test
     void testRegisterUserWillThrow() {
         // given
-        UserRegistrationRequest request = mock();
+        UserRegistrationRequestDTO request = mock();
         // when
         doReturn(false).when(userService).isEmailUnique(any());
         try {
@@ -89,7 +89,7 @@ class AuthenticationServiceImplTest {
             assertEquals(e.getMessage(), "This email has already been registered!!!");
         }
         verify(userService, times(1)).isEmailUnique(any());
-        verify(userRoleService, never()).getRoleByName(any());
+        verify(userRoleService, never()).getByName(any());
         verify(securityCredentialService, never()).saveCredentials(any());
         verify(userService, never()).saveUser(any());
     }

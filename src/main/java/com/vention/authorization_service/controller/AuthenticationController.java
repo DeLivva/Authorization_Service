@@ -1,7 +1,7 @@
 package com.vention.authorization_service.controller;
 
-import com.vention.authorization_service.dto.request.UserRegistrationRequest;
-import com.vention.authorization_service.dto.response.UserRegistrationResponse;
+import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
+import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
 import com.vention.authorization_service.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserRegistrationResponse> registerUser(@Valid @RequestBody UserRegistrationRequest request) {
+    public ResponseEntity<UserRegistrationResponseDTO> registerUser(@Valid @RequestBody UserRegistrationRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.registerUser(request));
     }
 }

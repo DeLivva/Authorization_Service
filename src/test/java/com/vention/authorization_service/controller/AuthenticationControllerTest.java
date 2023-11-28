@@ -1,8 +1,8 @@
 package com.vention.authorization_service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vention.authorization_service.dto.request.UserRegistrationRequest;
-import com.vention.authorization_service.dto.response.UserRegistrationResponse;
+import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
+import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
 import com.vention.authorization_service.service.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,8 +44,8 @@ class AuthenticationControllerTest {
     @Test
     void testRegisterUser() throws Exception {
         // given
-        UserRegistrationResponse response = mock();
-        UserRegistrationRequest request = new UserRegistrationRequest("test@gmail.com", "12345678");
+        UserRegistrationResponseDTO response = mock();
+        UserRegistrationRequestDTO request = new UserRegistrationRequestDTO("test@gmail.com", "12345678");
         // when
         doReturn(response).when(authenticationService).registerUser(any());
         String requestBody = objectMapper.writeValueAsString(request);
@@ -60,8 +60,8 @@ class AuthenticationControllerTest {
     @Test
     void testRegisterUser2() throws Exception {
         // given
-        UserRegistrationResponse response = mock();
-        UserRegistrationRequest request = new UserRegistrationRequest("test@gmail.com", "1234567891011111");
+        UserRegistrationResponseDTO response = mock();
+        UserRegistrationRequestDTO request = new UserRegistrationRequestDTO("test@gmail.com", "1234567891011111");
         // when
         doReturn(response).when(authenticationService).registerUser(any());
         String requestBody = objectMapper.writeValueAsString(request);
@@ -76,7 +76,7 @@ class AuthenticationControllerTest {
     @Test
     void testRegisterUserWillFail1() throws Exception {
         // given
-        UserRegistrationRequest request = new UserRegistrationRequest("1324test@gmail.com", "123");
+        UserRegistrationRequestDTO request = new UserRegistrationRequestDTO("1324test@gmail.com", "123");
         // when
         String requestBody = objectMapper.writeValueAsString(request);
         // then
@@ -90,7 +90,7 @@ class AuthenticationControllerTest {
     @Test
     void testRegisterUserWillFail2() throws Exception {
         // given
-        UserRegistrationRequest request = new UserRegistrationRequest(" ", "123");
+        UserRegistrationRequestDTO request = new UserRegistrationRequestDTO(" ", "123");
         // when
         String requestBody = objectMapper.writeValueAsString(request);
         // then
@@ -104,7 +104,7 @@ class AuthenticationControllerTest {
     @Test
     void testRegisterUserWillFail3() throws Exception {
         // given
-        UserRegistrationRequest request = new UserRegistrationRequest("test@gmail.com", "12345678910111116");
+        UserRegistrationRequestDTO request = new UserRegistrationRequestDTO("test@gmail.com", "12345678910111116");
         // when
         String requestBody = objectMapper.writeValueAsString(request);
         // then

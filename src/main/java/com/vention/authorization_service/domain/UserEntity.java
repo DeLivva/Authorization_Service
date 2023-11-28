@@ -27,6 +27,8 @@ public class UserEntity extends BaseEntity {
 
     private String phoneNumber;
 
+    private String photo;
+
     @Builder.Default
     private Boolean isEnabled = false;
 
