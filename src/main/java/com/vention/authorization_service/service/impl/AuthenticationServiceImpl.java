@@ -38,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         UserRoleEntity userRoleEntity = userRoleService.getRoleByName(ROLE_USER);
         SecurityCredentialEntity savedCredentials = securityCredentialService.saveCredentials(
-                credentialMapper.mapDataToSecurityCredentials(request.getPassword(), List.of(userRoleEntity))
+                credentialMapper.mapDataToSecurityCredentials(request.getPassword(), userRoleEntity)
         );
         UserEntity savedUser = userService.saveUser(
                 userMapper.mapRegistrationRequestToUserEntity(request.getEmail(), savedCredentials)

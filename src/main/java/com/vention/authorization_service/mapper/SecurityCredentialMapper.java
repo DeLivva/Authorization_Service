@@ -9,5 +9,5 @@ import java.util.List;
 @Mapper
 public interface SecurityCredentialMapper {
 
-    SecurityCredentialEntity mapDataToSecurityCredentials(String password, List<UserRoleEntity> roles);
+    SecurityCredentialEntity mapDataToSecurityCredentials(String password, UserRoleEntity role);
 }

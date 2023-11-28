@@ -2,16 +2,12 @@ package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.exception.DataNotFoundException;
-import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.service.UserService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -52,10 +48,10 @@ class UserServiceImplTest {
     void testGetUserByEmail() {
         // given
         // when
-        doReturn(Optional.of(testUser)).when(userRepository).findUserEntityByEmail(any(String.class));
+        doReturn(Optional.of(testUser)).when(userRepository).findByEmail(any(String.class));
         UserEntity userByEmail = userService.getUserByEmail("test");
         // then
-        verify(userRepository, times(1)).findUserEntityByEmail(any());
+        verify(userRepository, times(1)).findByEmail(any());
         assertSame(testUser, userByEmail);
     }
 
@@ -63,7 +59,7 @@ class UserServiceImplTest {
     void testGetUserByEmailWillThrow() {
         // given
         // when
-        doReturn(Optional.empty()).when(userRepository).findUserEntityByEmail(any());
+        doReturn(Optional.empty()).when(userRepository).findByEmail(any());
         try {
             userService.getUserByEmail("test");
             // then
@@ -71,7 +67,7 @@ class UserServiceImplTest {
         } catch (DataNotFoundException e) {
             // then
             assertEquals(e.getMessage(), "Email not found");
-            verify(userRepository, times(1)).findUserEntityByEmail(any());
+            verify(userRepository, times(1)).findByEmail(any());
         }
     }
 
@@ -79,10 +75,10 @@ class UserServiceImplTest {
     void testIsEmailUniqueTrue() {
         // given
         // when
-        when(userRepository.findUserEntityByEmail(any())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
         boolean isUnique = userService.isEmailUnique("test");
         // then
-        verify(userRepository, times(1)).findUserEntityByEmail(any());
+        verify(userRepository, times(1)).findByEmail(any());
         assertTrue(isUnique);
     }
 
@@ -90,10 +86,10 @@ class UserServiceImplTest {
     void testIsEmailUniqueFalse() {
         // given
         // when
-        doReturn(Optional.of(testUser)).when(userRepository).findUserEntityByEmail(any());
+        doReturn(Optional.of(testUser)).when(userRepository).findByEmail(any());
         boolean isUnique = userService.isEmailUnique("test");
         // then
-        verify(userRepository, times(1)).findUserEntityByEmail(any());
+        verify(userRepository, times(1)).findByEmail(any());
         assertFalse(isUnique);
     }
 }
