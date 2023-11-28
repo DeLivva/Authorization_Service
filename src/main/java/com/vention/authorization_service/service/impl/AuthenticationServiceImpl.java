@@ -16,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static com.vention.authorization_service.utils.PropertyReader.ROLE_USER;
 
 @Service
