@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +22,11 @@ public class UserController {
     @PutMapping
     public ResponseEntity<UserUpdateResponseDTO> updateUser(@Valid @RequestBody UserUpdateRequestDTO dto) {
         return new ResponseEntity<>(userService.updateUser(dto), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(@Valid @RequestBody UserUpdateRequestDTO dto) {
+        userService.deleteUser(dto.getUserId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

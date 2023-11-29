@@ -9,6 +9,7 @@ import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserUpdateResponseDTO updateUser(UserUpdateRequestDTO dto) {
         UserEntity user = userRepository.findById(dto.getUserId()).orElseThrow(
                 () -> new DataNotFoundException("User with this id not found: " + dto.getUserId())
@@ -76,5 +78,15 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(user.getPhoneNumber())
                 .email(user.getEmail())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(
+                () -> new DataNotFoundException("User with this id not found: " + userId)
+        );
+        userRepository.delete(user);
+        securityCredentialRepository.delete(user.getCredentials());
     }
 }

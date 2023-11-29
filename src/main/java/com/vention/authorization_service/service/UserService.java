@@ -13,4 +13,6 @@ public interface UserService {
     boolean isEmailUnique(String email);
 
     UserUpdateResponseDTO updateUser(UserUpdateRequestDTO dto);
+
+    void deleteUser(Long userId);
 }
