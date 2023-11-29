@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/user-profile")
+@RequestMapping("/api/v1/user-profile")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService service;
@@ -26,10 +26,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.fillProfile(request));
     }
 
-    @PostMapping("/picture/{id}")
-    public ResponseEntity<String> uploadProfilePic(@PathVariable("id") Long userId,
+    @PostMapping("/picture/{user-id}")
+    public ResponseEntity<String> uploadProfilePic(@PathVariable("user-id") Long userId,
                                                    @RequestParam("image") MultipartFile file) {
-        String savedLink = service.uploadProfilePicture(userId, file);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedLink);
+        String link = service.uploadProfilePicture(userId, file);
+        return ResponseEntity.status(HttpStatus.CREATED).body(link);
     }
 }

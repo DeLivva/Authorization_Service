@@ -6,6 +6,7 @@ import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserRoleEntity;
 import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
 import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
+import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
 import com.vention.authorization_service.mapper.UserMapper;
@@ -17,6 +18,9 @@ import com.vention.authorization_service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -41,11 +45,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SecurityCredentialEntity savedCredentials = securityCredentialService.saveCredentials(
                 credentialMapper.mapDataToSecurityCredentials(request.getPassword(), userRoleEntity)
         );
-        UserEntity savedUser = userService.saveUser(
-                userMapper.mapRegistrationRequestToUserEntity(request.getEmail(), savedCredentials)
-        );
-        // Request will be sent to the notification service here to confirm email
-        return UserRegistrationResponseDTO.builder()
+        UserEntity savedUser = userService
+                .saveUser(userMapper.mapRegistrationRequestToUserEntity(request.getEmail(), savedCredentials));
+
         mailSendingService.sendConfirmationToken(savedUser);
         return UserRegistrationResponseDTO.builder()
                 .id(savedUser.getId())
@@ -71,9 +73,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String sendConfirmationToken(String email) {
-        UserEntity user = userService.getUserByEmail(email);
+        UserEntity user = userService.getByEmail(email)
+                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
         mailSendingService.sendConfirmationToken(user);
         return "Confirmation link send to your email";
     }
-
 }

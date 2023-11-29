@@ -3,6 +3,7 @@ package com.vention.authorization_service.config;
 import com.vention.authorization_service.dto.response.GlobalResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
+import com.vention.authorization_service.exception.InvalidFileTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class GlobalExceptionHandler {
         return getResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 
-    @ExceptionHandler(value = DuplicateDataException.class)
-    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(DuplicateDataException e) {
+    @ExceptionHandler(value = {DuplicateDataException.class, InvalidFileTypeException.class})
+    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(RuntimeException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
-  
+
     private ResponseEntity<GlobalResponseDTO> getResponse(String message, int status) {
         return ResponseEntity
                 .status(status)
@@ -34,7 +35,6 @@ public class GlobalExceptionHandler {
                         .status(status)
                         .message(message)
                         .time(ZonedDateTime.now())
-                        .build()
-                );
+                        .build());
     }
 }

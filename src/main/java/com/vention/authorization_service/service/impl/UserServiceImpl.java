@@ -4,6 +4,7 @@ import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
+import com.vention.authorization_service.exception.InvalidFileTypeException;
 import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.service.FileService;
@@ -63,9 +64,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String uploadProfilePicture(Long userId, MultipartFile file) {
-        String savedLocation = fileService.uploadFile(file);
         var user = repository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        if(!FileService.isImageFile(file)) {
+            throw new InvalidFileTypeException("The provided file is not an image. Please upload a valid image file.");
+        }
+        String savedLocation = fileService.uploadFile(file);
         user.setPhoto(savedLocation);
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         repository.save(user);

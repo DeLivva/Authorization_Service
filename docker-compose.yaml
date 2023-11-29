@@ -32,6 +32,13 @@ services:
       - postgres
     restart: unless-stopped
 
+  file-service:
+    build: .
+    volumes:
+      - type: volume
+        source: image-volume
+        target: ${IMAGE_PATH}
+
 networks:
   postgres:
     driver: bridge
@@ -39,3 +46,4 @@ networks:
 volumes:
   postgres:
   pgadmin:
+  image-volume:
