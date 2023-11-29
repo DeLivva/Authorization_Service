@@ -7,7 +7,7 @@ public interface AuthenticationService {
 
     UserRegistrationResponseDTO registerUser(UserRegistrationRequestDTO request);
 
-    String confirmEmail(String token);
+    void confirmEmail(String token);
 
-    String sendConfirmationToken(String email);
+    void sendConfirmationToken(String email);
 }

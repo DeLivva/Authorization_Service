@@ -17,7 +17,7 @@ import java.time.ZonedDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = DataNotFoundException.class)
-    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(DataNotFoundException e) {
+    public ResponseEntity<GlobalResponse> apiExceptionHandler(DataNotFoundException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
     }
@@ -28,7 +28,13 @@ public class GlobalExceptionHandler {
         return getResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
 
-    private ResponseEntity<GlobalResponseDTO> getResponse(String message, int status) {
+    @ExceptionHandler(value = ConfirmationTokenExpiredException.class)
+    public ResponseEntity<GlobalResponse> apiExceptionHandler(ConfirmationTokenExpiredException e) {
+        log.warn(e.getMessage());
+        return getResponse(e.getMessage(), HttpStatus.UNAUTHORIZED.value());
+    }
+
+    private ResponseEntity<GlobalResponse> getResponse(String message, int status) {
         return ResponseEntity
                 .status(status)
                 .body(GlobalResponseDTO.builder()
