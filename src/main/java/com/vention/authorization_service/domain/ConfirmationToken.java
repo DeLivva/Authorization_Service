@@ -29,6 +29,3 @@ public class ConfirmationToken {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 }
-
-
-

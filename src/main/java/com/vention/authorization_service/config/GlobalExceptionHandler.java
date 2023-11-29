@@ -1,6 +1,7 @@
 package com.vention.authorization_service.config;
 
 import com.vention.authorization_service.dto.response.GlobalResponse;
+import com.vention.authorization_service.exception.ConfirmationTokenExpiredException;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,13 @@ public class GlobalExceptionHandler {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
-  
+
+    @ExceptionHandler(value = ConfirmationTokenExpiredException.class)
+    public ResponseEntity<GlobalResponse> apiExceptionHandler(ConfirmationTokenExpiredException e) {
+        log.warn(e.getMessage());
+        return getResponse(e.getMessage(), HttpStatus.UNAUTHORIZED.value());
+    }
+
     private ResponseEntity<GlobalResponse> getResponse(String message, int status) {
         return ResponseEntity
                 .status(status)

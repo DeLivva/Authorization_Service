@@ -5,6 +5,7 @@ import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserRoleEntity;
 import com.vention.authorization_service.dto.response.UserRegistrationResponse;
+import com.vention.authorization_service.exception.ConfirmationTokenExpiredException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.dto.request.UserRegistrationRequest;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
@@ -56,24 +57,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String confirmEmail(String token) {
+    public void confirmEmail(String token) {
         ConfirmationToken confirmationToken = mailSendingService.getConfirmationToken(token);
         if (confirmationToken.getExpiredAt().after(Timestamp.valueOf(LocalDateTime.now()))) {
             confirmationToken.setConfirmedAt(Timestamp.valueOf(LocalDateTime.now()));
             UserEntity user = confirmationToken.getUser();
             user.setIsEnabled(true);
             mailSendingService.saveToken(confirmationToken);
-            return "Email successfully verified";
         } else {
-            return "Confirmation token expired";
+            throw new ConfirmationTokenExpiredException("Confirmation token expired");
         }
     }
 
     @Override
-    public String sendConfirmationToken(String email) {
+    public void sendConfirmationToken(String email) {
         UserEntity user = userService.getUserByEmail(email);
         mailSendingService.sendConfirmationToken(user);
-        return "Confirmation link send to your email";
     }
 
 }

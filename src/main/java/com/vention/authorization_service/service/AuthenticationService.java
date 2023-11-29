@@ -6,7 +6,7 @@ import com.vention.authorization_service.dto.response.UserRegistrationResponse;
 public interface AuthenticationService {
     UserRegistrationResponse registerUser(UserRegistrationRequest request);
 
-    String confirmEmail(String token);
+    void confirmEmail(String token);
 
-    String sendConfirmationToken(String email);
+    void sendConfirmationToken(String email);
 }
