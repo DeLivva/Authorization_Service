@@ -38,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional
     public UserRegistrationResponse registerUser(UserRegistrationRequest request) {
         if (!userService.isEmailUnique(request.getEmail())) {
-            throw new DuplicateDataException("This email has already been registered!!!");
+            throw new DuplicateDataException("Email " + request.getEmail() + " has already been registered!!!");
         }
         UserRoleEntity userRoleEntity = userRoleService.getRoleByName("USER");
         SecurityCredentialEntity savedCredentials = securityCredentialService.saveCredentials(

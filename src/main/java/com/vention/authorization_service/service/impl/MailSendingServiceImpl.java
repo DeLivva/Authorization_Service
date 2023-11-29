@@ -33,13 +33,14 @@ public class MailSendingServiceImpl implements MailSendingService {
     @Override
     public ConfirmationToken getConfirmationToken(String token) {
         return confirmationTokenRepository.findByToken(token).orElseThrow(
-                () -> new DataNotFoundException("Token not found")
+                () -> new DataNotFoundException("Token " + token + " not found")
         );
     }
 
     @Override
     public ConfirmationToken saveToken(ConfirmationToken token) {
-        return confirmationTokenRepository.save(token);}
+        return confirmationTokenRepository.save(token);
+    }
 
     private void sendMessage(String email, String token) {
 

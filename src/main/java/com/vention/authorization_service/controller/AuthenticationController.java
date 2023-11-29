@@ -27,14 +27,14 @@ public class AuthenticationController {
     }
 
     @GetMapping("/confirm-email")
-    public ResponseEntity<String> confirmEmail(@RequestParam String token){
+    public ResponseEntity<Void> confirmEmail(@RequestParam String token){
         authenticationService.confirmEmail(token);
-        return ResponseEntity.status(HttpStatus.OK).body("Email successfully verified");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/resend-confirmation")
-    public ResponseEntity<String> resendConfirmationToken(@RequestParam String email){
+    public ResponseEntity<Void> resendConfirmationToken(@RequestParam String email){
         authenticationService.sendConfirmationToken(email);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Confirmation link send to your email");
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
