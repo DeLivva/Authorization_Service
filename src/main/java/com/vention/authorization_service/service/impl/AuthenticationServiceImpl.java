@@ -6,6 +6,7 @@ import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserRoleEntity;
 import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
 import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
+import com.vention.authorization_service.exception.ConfirmationTokenExpiredException;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;

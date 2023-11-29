@@ -1,6 +1,7 @@
 package com.vention.authorization_service.config;
 
 import com.vention.authorization_service.dto.response.GlobalResponseDTO;
+import com.vention.authorization_service.exception.ConfirmationTokenExpiredException;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.exception.InvalidFileTypeException;
@@ -17,7 +18,7 @@ import java.time.ZonedDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = DataNotFoundException.class)
-    public ResponseEntity<GlobalResponse> apiExceptionHandler(DataNotFoundException e) {
+    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(DataNotFoundException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
     }
@@ -29,12 +30,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = ConfirmationTokenExpiredException.class)
-    public ResponseEntity<GlobalResponse> apiExceptionHandler(ConfirmationTokenExpiredException e) {
+    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(ConfirmationTokenExpiredException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.UNAUTHORIZED.value());
     }
 
-    private ResponseEntity<GlobalResponse> getResponse(String message, int status) {
+    private ResponseEntity<GlobalResponseDTO> getResponse(String message, int status) {
         return ResponseEntity
                 .status(status)
                 .body(GlobalResponseDTO.builder()
