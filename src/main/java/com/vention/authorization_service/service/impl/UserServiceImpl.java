@@ -18,9 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -94,7 +91,6 @@ public class UserServiceImpl implements UserService {
         if (dto.getPassword() != null) {
             credentials.setPassword(dto.getPassword());
         }
-        credentials.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         securityCredentialRepository.save(credentials);
 
         // change user
@@ -113,11 +109,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void deleteUser(Long userId) {
         UserEntity user = repository.findById(userId).orElseThrow(
                 () -> new DataNotFoundException("User with this id not found: " + userId)
         );
         user.setIsDeleted(true);
+        repository.save(user);
     }
 }
