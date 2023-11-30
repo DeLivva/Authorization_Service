@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/vehicle")
+@RequestMapping("/api/v1/vehicles")
 public class VehicleController {
     private final VehicleService service;
 

@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/vehicle-type")
+@RequestMapping("/api/v1/vehicle-types")
 public class VehicleTypeController {
 
     private final VehicleTypeService service;
