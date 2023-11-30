@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: Abbos
+      changes:
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: name
+                  value: USER
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: name
+                  value: ADMIN

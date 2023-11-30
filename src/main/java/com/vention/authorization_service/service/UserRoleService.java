@@ -4,5 +4,5 @@ import com.vention.authorization_service.domain.UserRoleEntity;
 
 public interface UserRoleService {
 
-    UserRoleEntity getRoleByName(String roleName);
+    UserRoleEntity getByName(String roleName);
 }

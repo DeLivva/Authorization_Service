@@ -4,10 +4,10 @@ import com.vention.authorization_service.domain.ConfirmationToken;
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserRoleEntity;
-import com.vention.authorization_service.dto.response.UserRegistrationResponse;
+import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
+import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
 import com.vention.authorization_service.exception.ConfirmationTokenExpiredException;
 import com.vention.authorization_service.exception.DuplicateDataException;
-import com.vention.authorization_service.dto.request.UserRegistrationRequest;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
 import com.vention.authorization_service.mapper.UserMapper;
 import com.vention.authorization_service.service.AuthenticationService;
@@ -31,24 +31,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRoleService userRoleService;
     private final UserMapper userMapper;
     private final SecurityCredentialMapper credentialMapper;
+    public final String DEFAULT_ROLE = "USER";
     private final MailSendingService mailSendingService;
 
 
     @Override
     @Transactional
-    public UserRegistrationResponse registerUser(UserRegistrationRequest request) {
-        if (!userService.isEmailUnique(request.getEmail())) {
-            throw new DuplicateDataException("Email " + request.getEmail() + " has already been registered!!!");
+    public UserRegistrationResponseDTO registerUser(UserRegistrationRequestDTO request) {
+        if (!userService.isEligibleForRegistration(request.getEmail())) {
+            throw new DuplicateDataException("This email has already been registered!!!");
         }
-        UserRoleEntity userRoleEntity = userRoleService.getRoleByName("USER");
+        UserRoleEntity userRoleEntity = userRoleService.getByName(DEFAULT_ROLE);
         SecurityCredentialEntity savedCredentials = securityCredentialService.saveCredentials(
                 credentialMapper.mapDataToSecurityCredentials(request.getPassword(), userRoleEntity)
         );
-        UserEntity savedUser = userService.saveUser(
-                userMapper.mapRegistrationRequestToUserEntity(request.getEmail(), savedCredentials)
-        );
+        UserEntity savedUser = userService
+                .saveUser(userMapper.mapRegistrationRequestToUserEntity(request.getEmail(), savedCredentials));
+
         mailSendingService.sendConfirmationToken(savedUser);
-        return UserRegistrationResponse.builder()
+        return UserRegistrationResponseDTO.builder()
                 .id(savedUser.getId())
                 .email(savedUser.getEmail())
                 .firstName(savedUser.getFirstName())
@@ -71,8 +72,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void sendConfirmationToken(String email) {
-        UserEntity user = userService.getUserByEmail(email);
+        UserEntity user = userService.getByEmail(email);
         mailSendingService.sendConfirmationToken(user);
     }
-
 }

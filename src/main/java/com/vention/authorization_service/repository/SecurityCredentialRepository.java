@@ -4,7 +4,9 @@ import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface SecurityCredentialRepository extends JpaRepository<SecurityCredentialEntity, Long> {
-
+    Optional<SecurityCredentialEntity> findByUsername(String username);
 }

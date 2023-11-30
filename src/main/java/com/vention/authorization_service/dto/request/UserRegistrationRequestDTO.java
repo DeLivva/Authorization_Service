@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegistrationRequest {
+public class UserRegistrationRequestDTO {
 
     @Pattern(regexp = "^[A-Za-z][A-Za-z0-9+_.-]*@[A-Za-z0-9.-]+\\.com$")
     private String email;

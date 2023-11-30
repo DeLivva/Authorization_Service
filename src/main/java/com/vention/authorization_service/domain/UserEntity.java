@@ -27,8 +27,13 @@ public class UserEntity extends BaseEntity {
 
     private String phoneNumber;
 
+    private String photo;
+
     @Builder.Default
     private Boolean isEnabled = false;
+
+    @Column(name = "is_deleted", columnDefinition = "boolean default false")
+    private Boolean isDeleted;
 
     @OneToOne
     @JoinColumn(name = "credential_id", referencedColumnName = "id")
