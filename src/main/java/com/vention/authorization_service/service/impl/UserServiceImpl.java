@@ -20,8 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getByEmail(String email) {
-        return repository.findByEmail(email)
-                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
+        return repository.findByEmail(email).orElseThrow(
+                () -> new DataNotFoundException("User not found with email: " + email)
+        );
     }
 
     @Override
@@ -51,8 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity fillProfile(UserProfileFillRequestDTO request) {
-        var user = repository.findById(request.getUserId())
-                .orElseThrow(() -> new DataNotFoundException("User not found on id: " + request.getUserId()));
+        var user = repository.findById(request.getUserId()).orElseThrow(
+                () -> new DataNotFoundException("User not found on id: " + request.getUserId())
+        );
 
         if (securityCredentialRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new DuplicateDataException("This username already exist: " + request.getUsername());
@@ -70,8 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String uploadProfilePicture(Long userId, MultipartFile file) {
-        var user = repository.findById(userId)
-                .orElseThrow(() -> new DataNotFoundException("User not found"));
+        var user = repository.findById(userId).orElseThrow(() -> new DataNotFoundException("User not found"));
 
         if (!fileUtils.isImageFile(file)) {
             throw new InvalidFileTypeException("The provided file is not an image. Please upload a valid image file.");
@@ -85,14 +84,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserUpdateResponseDTO updateUser(UserUpdateRequestDTO dto) {
-        UserEntity user = userRepository.findById(dto.getUserId()).orElseThrow(
+        UserEntity user = repository.findById(dto.getUserId()).orElseThrow(
                 () -> new DataNotFoundException("User with this id not found: " + dto.getUserId())
         );
 
-        Optional<UserEntity> byEmail = userRepository.findByEmail(dto.getEmail());
-        if (byEmail.isPresent() && !Objects.equals(byEmail.get().getId(), user.getId())) {
-            throw new DuplicateDataException("This email already exists: " + dto.getEmail());
-        }
         // change credentials
         SecurityCredentialEntity credentials = user.getCredentials();
         credentials.setUsername(dto.getUsername());
@@ -106,9 +101,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
-        user.setEmail(dto.getEmail());
-        user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        userRepository.save(user);
+        repository.save(user);
 
         return UserUpdateResponseDTO.builder()
                 .username(user.getCredentials().getUsername())
@@ -122,10 +115,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(
+        UserEntity user = repository.findById(userId).orElseThrow(
                 () -> new DataNotFoundException("User with this id not found: " + userId)
         );
-        userRepository.delete(user);
-        securityCredentialRepository.delete(user.getCredentials());
+        user.setIsDeleted(true);
     }
 }

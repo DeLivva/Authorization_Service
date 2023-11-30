@@ -25,9 +25,6 @@ public class UserUpdateRequestDTO {
     @Pattern(regexp = "^\\d{7,15}$")
     private String phoneNumber;
 
-    @Pattern(regexp = "^[A-Za-z][A-Za-z0-9+_.-]*@[A-Za-z0-9.-]+\\.com$")
-    private String email;
-
     @Pattern(regexp = ".{8,16}")
     private String password;
 }

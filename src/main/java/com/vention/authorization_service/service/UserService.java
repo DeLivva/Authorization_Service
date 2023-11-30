@@ -18,8 +18,6 @@ public interface UserService {
 
     String uploadProfilePicture(Long userId, MultipartFile file);
 
-    boolean isEmailUnique(String email);
-
     UserUpdateResponseDTO updateUser(UserUpdateRequestDTO dto);
 
     void deleteUser(Long userId);
