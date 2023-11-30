@@ -3,8 +3,8 @@ package com.vention.authorization_service.service.impl;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.VehicleEntity;
 import com.vention.authorization_service.domain.VehicleTypeEntity;
-import com.vention.authorization_service.dto.request.VehicleCreationRequestDto;
-import com.vention.authorization_service.dto.request.VehicleUpdateDto;
+import com.vention.authorization_service.dto.request.VehicleCreationRequestDTO;
+import com.vention.authorization_service.dto.request.VehicleUpdateDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.repository.VehicleRepository;
@@ -44,7 +44,7 @@ class VehicleServiceImplTest {
 
     @Test
     void testCreateVehicleSuccess() {
-        VehicleCreationRequestDto requestDto = new VehicleCreationRequestDto();
+        VehicleCreationRequestDTO requestDto = new VehicleCreationRequestDTO();
         requestDto.setUserId(1L);
         requestDto.setVehicleTypeId(1L);
         VehicleTypeEntity vehicleType = new VehicleTypeEntity();
@@ -104,7 +104,7 @@ class VehicleServiceImplTest {
 
     @Test
     void testUpdateVehicleSuccess() {
-        VehicleUpdateDto updateDto = new VehicleUpdateDto();
+        VehicleUpdateDTO updateDto = new VehicleUpdateDTO();
         updateDto.setId(1L);
         updateDto.setUserId(1L);
         updateDto.setVehicleTypeId(1L);
@@ -121,7 +121,7 @@ class VehicleServiceImplTest {
 
     @Test
     void testUpdateVehicleNotFound() {
-        VehicleUpdateDto updateDto = new VehicleUpdateDto();
+        VehicleUpdateDTO updateDto = new VehicleUpdateDTO();
         updateDto.setId(1L);
         updateDto.setUserId(1L);
         when(vehicleRepository.getByIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.empty());

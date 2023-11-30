@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class VehicleCreationRequestDto {
+public class VehicleCreationRequestDTO {
     @NotNull
     private Long userId;
 

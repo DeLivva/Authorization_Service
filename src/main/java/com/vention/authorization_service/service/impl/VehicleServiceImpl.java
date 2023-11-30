@@ -1,8 +1,8 @@
 package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.VehicleEntity;
-import com.vention.authorization_service.dto.request.VehicleCreationRequestDto;
-import com.vention.authorization_service.dto.request.VehicleUpdateDto;
+import com.vention.authorization_service.dto.request.VehicleCreationRequestDTO;
+import com.vention.authorization_service.dto.request.VehicleUpdateDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.repository.VehicleRepository;
@@ -23,7 +23,7 @@ public class VehicleServiceImpl implements VehicleService {
 
 
     @Override
-    public VehicleEntity create(VehicleCreationRequestDto requestDto) {
+    public VehicleEntity create(VehicleCreationRequestDTO requestDto) {
         var vehicleType = vehicleTypeRepository.findById(requestDto.getVehicleTypeId())
                 .orElseThrow(() -> new DataNotFoundException("Vehicle type not found with id : " + requestDto.getVehicleTypeId()));
         var user = userRepository.findById(requestDto.getUserId())
@@ -51,7 +51,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void update(VehicleUpdateDto updateDto) {
+    public void update(VehicleUpdateDTO updateDto) {
         VehicleEntity vehicle = repository.getByIdAndUserId(updateDto.getId(), updateDto.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("Vehicle not found with id: " + updateDto.getId() + " and userId: " + updateDto.getUserId()));
 

@@ -1,8 +1,8 @@
 package com.vention.authorization_service.controller;
 
 import com.vention.authorization_service.domain.VehicleEntity;
-import com.vention.authorization_service.dto.request.VehicleCreationRequestDto;
-import com.vention.authorization_service.dto.request.VehicleUpdateDto;
+import com.vention.authorization_service.dto.request.VehicleCreationRequestDTO;
+import com.vention.authorization_service.dto.request.VehicleUpdateDTO;
 import com.vention.authorization_service.service.VehicleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class VehicleController {
     private final VehicleService service;
 
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid VehicleCreationRequestDto requestDto) {
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid VehicleCreationRequestDTO requestDto) {
         service.create(requestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -38,7 +38,7 @@ public class VehicleController {
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> update(@RequestBody @Valid VehicleUpdateDto vehicleUpdateDto) {
+    public ResponseEntity<HttpStatus> update(@RequestBody @Valid VehicleUpdateDTO vehicleUpdateDto) {
         service.update(vehicleUpdateDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
