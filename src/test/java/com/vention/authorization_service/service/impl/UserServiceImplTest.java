@@ -7,7 +7,6 @@ import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.repository.UserRepository;
-import com.vention.authorization_service.service.FileService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,9 +39,6 @@ class UserServiceImplTest {
     @Mock
     private SecurityCredentialRepository securityCredentialRepository;
 
-    @Mock
-    private FileService fileService;
-
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -71,7 +67,7 @@ class UserServiceImplTest {
         // given
         // when
         doReturn(Optional.of(testUser)).when(userRepository).findByEmail(any(String.class));
-        UserEntity userByEmail = userService.getByEmail("test").get();
+        UserEntity userByEmail = userService.getByEmail("test");
         // then
         verify(userRepository, times(1)).findByEmail(any());
         assertSame(testUser, userByEmail);
@@ -88,7 +84,7 @@ class UserServiceImplTest {
             fail("Expected exception, but exception is not thrown");
         } catch (DataNotFoundException e) {
             // then
-            assertEquals(e.getMessage(), "Email not found");
+            assertEquals(e.getMessage(), "User not found with email: test");
             verify(userRepository, times(1)).findByEmail(any());
         }
     }
@@ -98,7 +94,7 @@ class UserServiceImplTest {
         // given
         // when
         when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
-        boolean isUnique = userService.isEmailUnique("test");
+        boolean isUnique = userService.isEligibleForRegistration("test");
         // then
         verify(userRepository, times(1)).findByEmail(any());
         assertTrue(isUnique);
@@ -109,7 +105,7 @@ class UserServiceImplTest {
         // given
         // when
         doReturn(Optional.of(testUser)).when(userRepository).findByEmail(any());
-        boolean isUnique = userService.isEmailUnique("test");
+        boolean isUnique = userService.isEligibleForRegistration("test");
         // then
         verify(userRepository, times(1)).findByEmail(any());
         assertFalse(isUnique);

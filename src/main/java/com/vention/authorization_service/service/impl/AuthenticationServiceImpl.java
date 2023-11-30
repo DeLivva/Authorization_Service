@@ -7,7 +7,6 @@ import com.vention.authorization_service.domain.UserRoleEntity;
 import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
 import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
 import com.vention.authorization_service.exception.ConfirmationTokenExpiredException;
-import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
 import com.vention.authorization_service.mapper.UserMapper;
@@ -39,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public UserRegistrationResponseDTO registerUser(UserRegistrationRequestDTO request) {
-        if (userService.getByEmail(request.getEmail()).isPresent()) {
+        if (!userService.isEligibleForRegistration(request.getEmail())) {
             throw new DuplicateDataException("This email has already been registered!!!");
         }
         UserRoleEntity userRoleEntity = userRoleService.getByName(DEFAULT_ROLE);
@@ -73,8 +72,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void sendConfirmationToken(String email) {
-        UserEntity user = userService.getByEmail(email)
-                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
+        UserEntity user = userService.getByEmail(email);
         mailSendingService.sendConfirmationToken(user);
     }
 }

@@ -66,13 +66,13 @@ class AuthenticationServiceImplTest {
         UserEntity userEntity = mock();
         UserRegistrationRequestDTO request = mock();
         // when
-        doReturn(true).when(userService).isEmailUnique(any());
+        doReturn(true).when(userService).isEligibleForRegistration(any());
         doReturn(userRoleEntity).when(userRoleService).getByName(any());
         doReturn(credentialEntity).when(securityCredentialService).saveCredentials(any());
         doReturn(userEntity).when(userService).saveUser(any());
         UserRegistrationResponseDTO response = authenticationService.registerUser(request);
         // then
-        verify(userService, times(1)).isEmailUnique(any());
+        verify(userService, times(1)).isEligibleForRegistration(any());
         verify(userRoleService, times(1)).getByName(any());
         verify(securityCredentialService, times(1)).saveCredentials(any());
         verify(userService, times(1)).saveUser(any());
@@ -84,14 +84,14 @@ class AuthenticationServiceImplTest {
         // given
         UserRegistrationRequestDTO request = mock();
         // when
-        doReturn(false).when(userService).isEmailUnique(any());
+        doReturn(false).when(userService).isEligibleForRegistration(any());
         try {
             authenticationService.registerUser(request);
             fail("Expected exception but exception is not thrown");
         } catch (DuplicateDataException e) {
             assertEquals(e.getMessage(), "This email has already been registered!!!");
         }
-        verify(userService, times(1)).isEmailUnique(any());
+        verify(userService, times(1)).isEligibleForRegistration(any());
         verify(userRoleService, never()).getByName(any());
         verify(securityCredentialService, never()).saveCredentials(any());
         verify(userService, never()).saveUser(any());

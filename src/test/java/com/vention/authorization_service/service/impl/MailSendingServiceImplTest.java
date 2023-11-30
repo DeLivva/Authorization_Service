@@ -55,7 +55,7 @@ class MailSendingServiceImplTest {
             // then
         } catch (DataNotFoundException e) {
             // then
-            assertEquals(e.getMessage(), "Token not found");
+            assertEquals(e.getMessage(), "Token testToken not found");
             verify(confirmationTokenRepository, times(1)).findByToken(any());
         }
     }

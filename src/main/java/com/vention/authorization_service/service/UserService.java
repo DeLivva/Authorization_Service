@@ -4,15 +4,13 @@ import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
-
 public interface UserService {
 
     UserEntity saveUser(UserEntity user);
 
-    Optional<UserEntity> getByEmail(String email);
+    UserEntity getByEmail(String email);
 
-    boolean isEmailUnique(String email);
+    boolean isEligibleForRegistration(String email);
 
     UserEntity fillProfile(UserProfileFillRequestDTO request);
 

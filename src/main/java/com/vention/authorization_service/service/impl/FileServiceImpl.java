@@ -16,13 +16,13 @@ import java.nio.file.Paths;
 public class FileServiceImpl implements FileService {
 
     @Value("${files.image-path}")
-    private String FILE_PATH;
+    private String fileDirectory;
 
     @Override
     public String uploadFile(MultipartFile file) {
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(FILE_PATH + file.getOriginalFilename());
+            Path path = Paths.get(fileDirectory + file.getOriginalFilename());
             Files.write(path, bytes);
             return path.toString();
         } catch (IOException e) {

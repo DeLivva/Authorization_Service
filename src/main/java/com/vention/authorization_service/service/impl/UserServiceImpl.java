@@ -9,12 +9,11 @@ import com.vention.authorization_service.repository.SecurityCredentialRepository
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.service.FileService;
 import com.vention.authorization_service.service.UserService;
+import com.vention.authorization_service.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -24,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final SecurityCredentialRepository securityCredentialRepository;
     private final FileService fileService;
+    private final FileUtils fileUtils;
 
     @Override
     public UserEntity saveUser(UserEntity user) {
@@ -31,14 +31,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserEntity> getByEmail(String email) {
-        return repository.findByEmail(email);
+    public UserEntity getByEmail(String email) {
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
     }
 
     @Override
-    public boolean isEmailUnique(String email) {
-        return repository.findByEmail(email)
-                .isEmpty();
+    public boolean isEligibleForRegistration(String email) {
+        var user = repository.findByEmail(email);
+        return user.isEmpty() || user.get().getIsDeleted();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
         var user = repository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
-        if (!FileService.isImageFile(file)) {
+        if (!fileUtils.isImageFile(file)) {
             throw new InvalidFileTypeException("The provided file is not an image. Please upload a valid image file.");
         }
         String savedLocation = fileService.uploadFile(file);
