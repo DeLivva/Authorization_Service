@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class GlobalResponse {
+public class GlobalResponseDTO {
     private int status;
     private String message;
     private ZonedDateTime time;

@@ -1,10 +1,13 @@
 package com.vention.authorization_service.service;
 
-import com.vention.authorization_service.dto.request.UserRegistrationRequest;
-import com.vention.authorization_service.dto.response.GlobalResponse;
-import com.vention.authorization_service.dto.response.UserRegistrationResponse;
+import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
+import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
 
 public interface AuthenticationService {
 
-    UserRegistrationResponse registerUser(UserRegistrationRequest request);
+    UserRegistrationResponseDTO registerUser(UserRegistrationRequestDTO request);
+
+    void confirmEmail(String token);
+
+    void sendConfirmationToken(String email);
 }
