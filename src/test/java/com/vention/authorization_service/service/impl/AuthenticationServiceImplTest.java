@@ -8,14 +8,13 @@ import com.vention.authorization_service.dto.response.UserRegistrationResponseDT
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
 import com.vention.authorization_service.mapper.UserMapper;
-import com.vention.authorization_service.service.AuthenticationService;
 import com.vention.authorization_service.service.MailSendingService;
 import com.vention.authorization_service.service.SecurityCredentialService;
 import com.vention.authorization_service.service.UserRoleService;
 import com.vention.authorization_service.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -47,16 +46,11 @@ class AuthenticationServiceImplTest {
     @Mock
     private SecurityCredentialMapper credentialMapper;
 
-    private AuthenticationService authenticationService;
     @Mock
     private MailSendingService mailSendingService;
 
-    @BeforeEach
-    void setUp() {
-        authenticationService = new AuthenticationServiceImpl(
-                userService, securityCredentialService, userRoleService, userMapper, credentialMapper, mailSendingService
-        );
-    }
+    @InjectMocks
+    private AuthenticationServiceImpl authenticationService;
 
     @Test
     void testRegisterUser() {
