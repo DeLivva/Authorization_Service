@@ -21,3 +21,7 @@ spring:
 user:
   roles:
     user: USER
+
+token :
+  expiration:
+    seconds: 120

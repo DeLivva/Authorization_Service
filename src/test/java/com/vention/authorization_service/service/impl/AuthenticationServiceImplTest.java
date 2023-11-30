@@ -9,6 +9,7 @@ import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
 import com.vention.authorization_service.mapper.UserMapper;
 import com.vention.authorization_service.service.AuthenticationService;
+import com.vention.authorization_service.service.MailSendingService;
 import com.vention.authorization_service.service.SecurityCredentialService;
 import com.vention.authorization_service.service.UserRoleService;
 import com.vention.authorization_service.service.UserService;
@@ -47,11 +48,13 @@ class AuthenticationServiceImplTest {
     private SecurityCredentialMapper credentialMapper;
 
     private AuthenticationService authenticationService;
+    @Mock
+    private MailSendingService mailSendingService;
 
     @BeforeEach
     void setUp() {
         authenticationService = new AuthenticationServiceImpl(
-                userService, securityCredentialService, userRoleService, userMapper, credentialMapper
+                userService, securityCredentialService, userRoleService, userMapper, credentialMapper, mailSendingService
         );
     }
 

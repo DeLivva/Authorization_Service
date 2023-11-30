@@ -114,4 +114,28 @@ class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
         verify(authenticationService, never()).registerUser(any());
     }
+
+    @Test
+    void testConfirmEmail() throws Exception {
+        // given
+        String token = "token";
+
+        // then
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/auth/confirm-email")
+                        .param("token", token))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        verify(authenticationService, times(1)).confirmEmail(token);
+    }
+
+    @Test
+    void testResendConfirmationToken() throws Exception {
+        // given
+        String email = "test@gmail.com";
+
+        // then
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/auth/resend-confirmation")
+                        .param("email", email))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+        verify(authenticationService, times(1)).sendConfirmationToken(email);
+    }
 }
