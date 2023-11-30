@@ -51,13 +51,11 @@ public class UserServiceImpl implements UserService {
         }
         var credentials = user.getCredentials();
         credentials.setUsername(request.getUsername());
-        credentials.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         securityCredentialRepository.save(credentials);
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
-        user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         repository.save(user);
         return user;
     }
@@ -72,7 +70,6 @@ public class UserServiceImpl implements UserService {
         }
         String savedLocation = fileService.uploadFile(file);
         user.setPhoto(savedLocation);
-        user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         repository.save(user);
         return savedLocation;
     }
