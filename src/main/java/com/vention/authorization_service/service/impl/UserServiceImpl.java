@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         var user = repository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
-        if(!FileService.isImageFile(file)) {
+        if (!FileService.isImageFile(file)) {
             throw new InvalidFileTypeException("The provided file is not an image. Please upload a valid image file.");
         }
         String savedLocation = fileService.uploadFile(file);
