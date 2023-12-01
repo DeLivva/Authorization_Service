@@ -2,6 +2,7 @@ package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
+import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
@@ -167,7 +168,7 @@ class UserServiceImplTest {
 
     @Test
     public void testDeleteUserSuccess() {
-        UserUpdateRequestDTO request = new UserUpdateRequestDTO();
+        UserDeleteRequestDTO request = new UserDeleteRequestDTO();
         request.setUserId(1L);
         UserEntity user = new UserEntity();
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -180,7 +181,7 @@ class UserServiceImplTest {
 
     @Test
     public void testDeleteUserNotFoundException() {
-        UserUpdateRequestDTO request = new UserUpdateRequestDTO();
+        UserDeleteRequestDTO request = new UserDeleteRequestDTO();
         request.setUserId(1L);
         when(userRepository.findById(2L)).thenReturn(Optional.empty());
 

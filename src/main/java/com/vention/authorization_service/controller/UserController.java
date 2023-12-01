@@ -1,5 +1,6 @@
 package com.vention.authorization_service.controller;
 
+import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.domain.UserEntity;
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@Valid @RequestBody UserUpdateRequestDTO dto) {
+    public ResponseEntity<Void> deleteUser(@Valid @RequestBody UserDeleteRequestDTO dto) {
         userService.deleteUser(dto.getUserId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
