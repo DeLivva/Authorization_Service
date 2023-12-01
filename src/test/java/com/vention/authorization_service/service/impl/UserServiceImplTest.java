@@ -2,7 +2,10 @@ package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
+import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
+import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
+import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.repository.SecurityCredentialRepository;
@@ -161,5 +164,89 @@ class UserServiceImplTest {
 
         // then
         assertThrows(DuplicateDataException.class, () -> userService.fillProfile(request));
+    }
+
+    @Test
+    public void testDeleteUserSuccess() {
+        UserDeleteRequestDTO request = new UserDeleteRequestDTO();
+        request.setUserId(1L);
+        UserEntity user = new UserEntity();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        userService.deleteUser(request.getUserId());
+        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).save(user);
+        assertTrue(user.getIsDeleted());
+    }
+
+    @Test
+    public void testDeleteUserNotFoundException() {
+        UserDeleteRequestDTO request = new UserDeleteRequestDTO();
+        request.setUserId(1L);
+        when(userRepository.findById(2L)).thenReturn(Optional.empty());
+
+        assertThrows(DataNotFoundException.class, () -> userService.deleteUser(2L));
+    }
+
+    @Test
+    public void testUpdateUserNotFoundException() {
+        UserUpdateRequestDTO request = new UserUpdateRequestDTO();
+        request.setUserId(1L);
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(DataNotFoundException.class, () -> userService.updateUser(request));
+    }
+
+    @Test
+    public void testUpdateUserNoPasswordSuccess() {
+        UserUpdateRequestDTO request = new UserUpdateRequestDTO();
+        request.setUserId(1L);
+        request.setFirstName("Jacky");
+        request.setLastName("Chan");
+        request.setPhoneNumber("123456789");
+        request.setUsername("jacky123");
+        UserEntity user = new UserEntity();
+        SecurityCredentialEntity credentials = new SecurityCredentialEntity();
+        user.setCredentials(credentials);
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(securityCredentialRepository.save(any(SecurityCredentialEntity.class))).thenReturn(credentials);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(user);
+
+        UserUpdateResponseDTO response = userService.updateUser(request);
+        assertEquals("Jacky", response.getFirstName());
+        assertEquals("Chan", response.getLastName());
+        assertEquals("123456789", response.getPhoneNumber());
+        assertEquals("jacky123", response.getUsername());
+        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).save(user);
+        verify(securityCredentialRepository, times(1)).save(credentials);
+    }
+
+    @Test
+    public void testUpdateUserWithPasswordSuccess() {
+        UserUpdateRequestDTO request = new UserUpdateRequestDTO();
+        request.setUserId(1L);
+        request.setFirstName("Jacky");
+        request.setLastName("Chan");
+        request.setPhoneNumber("123456789");
+        request.setUsername("jacky123");
+        request.setPassword("password");
+        UserEntity user = new UserEntity();
+        SecurityCredentialEntity credentials = new SecurityCredentialEntity();
+        user.setCredentials(credentials);
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(securityCredentialRepository.save(any(SecurityCredentialEntity.class))).thenReturn(credentials);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(user);
+
+        UserUpdateResponseDTO response = userService.updateUser(request);
+        assertEquals("Jacky", response.getFirstName());
+        assertEquals("Chan", response.getLastName());
+        assertEquals("123456789", response.getPhoneNumber());
+        assertEquals("jacky123", response.getUsername());
+        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).save(user);
+        verify(securityCredentialRepository, times(1)).save(credentials);
     }
 }
