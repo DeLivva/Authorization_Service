@@ -1,6 +1,9 @@
 name: DeLivva Authorization CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - feature/JI-43-create-production-environment
 jobs:
   run-test:
     services:
