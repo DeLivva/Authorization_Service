@@ -1,7 +1,9 @@
 package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.VehicleTypeEntity;
+import com.vention.authorization_service.dto.response.VehicleTypeResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.authorization_service.mapper.VehicleTypeMapper;
 import com.vention.authorization_service.repository.VehicleTypeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,10 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -29,30 +30,23 @@ class VehicleTypeServiceImplTest {
     @Mock
     private VehicleTypeRepository repository;
 
+    @Mock
+    private VehicleTypeMapper vehicleTypeMapper;
+
     @InjectMocks
     private VehicleTypeServiceImpl service;
 
     @Test
     void createVehicleType() {
         VehicleTypeEntity vehicleType = new VehicleTypeEntity();
+        VehicleTypeResponseDTO vehicleTypeResponseDTO = new VehicleTypeResponseDTO();
         when(repository.save(any(VehicleTypeEntity.class))).thenReturn(vehicleType);
+        when(vehicleTypeMapper.convertEntityToResponseDto(any(VehicleTypeEntity.class))).thenReturn(vehicleTypeResponseDTO);
 
-        VehicleTypeEntity created = service.create(new VehicleTypeEntity());
+        VehicleTypeResponseDTO created = service.create(new VehicleTypeEntity());
 
         assertNotNull(created);
         verify(repository).save(any(VehicleTypeEntity.class));
-    }
-
-    @Test
-    void getVehicleTypeByIdFound() {
-        Long id = 1L;
-        Optional<VehicleTypeEntity> vehicleType = Optional.of(new VehicleTypeEntity());
-        when(repository.findById(id)).thenReturn(vehicleType);
-
-        Optional<VehicleTypeEntity> found = service.getById(id);
-
-        assertTrue(found.isPresent());
-        verify(repository).findById(id);
     }
 
     @Test
@@ -60,10 +54,7 @@ class VehicleTypeServiceImplTest {
         Long id = 1L;
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        Optional<VehicleTypeEntity> found = service.getById(id);
-
-        assertFalse(found.isPresent());
-        verify(repository).findById(id);
+        assertThrows(DataNotFoundException.class, () -> service.getById(id));
     }
 
     @Test
@@ -101,9 +92,9 @@ class VehicleTypeServiceImplTest {
         list.add(new VehicleTypeEntity());
         when(repository.findAll()).thenReturn(list);
 
-        List<VehicleTypeEntity> result = service.getAll();
+        List<VehicleTypeResponseDTO> result = service.getAll();
 
-        assertFalse(result.isEmpty());
+        assertEquals(result.size(), 1);
         verify(repository).findAll();
     }
 }

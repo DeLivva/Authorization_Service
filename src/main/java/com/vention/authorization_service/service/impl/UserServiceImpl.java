@@ -7,8 +7,9 @@ import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
-import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.exception.InvalidFileTypeException;
+import com.vention.authorization_service.mapper.UserMapper;
+import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.service.FileService;
 import com.vention.authorization_service.service.UserService;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final SecurityCredentialRepository securityCredentialRepository;
     private final FileService fileService;
     private final FileUtils fileUtils;
+    private final UserMapper userMapper;
 
     @Override
     public UserEntity saveUser(UserEntity user) {
@@ -46,10 +48,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity fillProfile(UserProfileFillRequestDTO request) {
-        var user = repository.findById(request.getUserId()).orElseThrow(
-                () -> new DataNotFoundException("User not found on id: " + request.getUserId())
-        );
+    public UserUpdateResponseDTO fillProfile(UserProfileFillRequestDTO request) {
+        var user = repository.findById(request.getUserId())
+                .orElseThrow(() -> new DataNotFoundException("User not found on id: " + request.getUserId()));
 
         if (securityCredentialRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new DuplicateDataException("This username already exist: " + request.getUsername());
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
         repository.save(user);
-        return user;
+        return userMapper.mapUserEntityToResponseDto(user);
     }
 
     @Override

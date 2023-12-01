@@ -3,15 +3,15 @@ package com.vention.authorization_service.service.impl;
 import com.vention.authorization_service.domain.VehicleEntity;
 import com.vention.authorization_service.dto.request.VehicleCreationRequestDTO;
 import com.vention.authorization_service.dto.request.VehicleUpdateDTO;
+import com.vention.authorization_service.dto.response.VehicleResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.authorization_service.mapper.VehicleMapper;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.repository.VehicleRepository;
 import com.vention.authorization_service.repository.VehicleTypeRepository;
 import com.vention.authorization_service.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +20,11 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository repository;
     private final VehicleTypeRepository vehicleTypeRepository;
     private final UserRepository userRepository;
+    private final VehicleMapper vehicleMapper;
 
 
     @Override
-    public VehicleEntity create(VehicleCreationRequestDTO requestDto) {
+    public VehicleResponseDTO create(VehicleCreationRequestDTO requestDto) {
         var vehicleType = vehicleTypeRepository.findById(requestDto.getVehicleTypeId())
                 .orElseThrow(() -> new DataNotFoundException("Vehicle type not found with id : " + requestDto.getVehicleTypeId()));
         var user = userRepository.findById(requestDto.getUserId())
@@ -35,25 +36,28 @@ public class VehicleServiceImpl implements VehicleService {
                 .user(user)
                 .registrationNumber(requestDto.getRegistrationNumber())
                 .vehicleType(vehicleType).build();
-        return repository.save(vehicle);
+        return vehicleMapper.mapEntityToDto(repository.save(vehicle));
     }
 
     @Override
-    public VehicleEntity getByUserId(Long userId) {
-        return repository.getByUserId(userId)
+    public VehicleResponseDTO getByUserId(Long userId) {
+        VehicleEntity vehicle = repository.getByUserId(userId)
                 .orElseThrow(() -> new DataNotFoundException("Vehicle not found on user with id: " + userId));
+        return vehicleMapper.mapEntityToDto(vehicle);
     }
 
 
     @Override
-    public Optional<VehicleEntity> getById(Long id) {
-        return repository.findById(id);
+    public VehicleResponseDTO getById(Long id) {
+        VehicleEntity vehicle = repository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Vehicle not found with id: " + id));
+        return vehicleMapper.mapEntityToDto(vehicle);
     }
 
     @Override
     public void update(VehicleUpdateDTO updateDto) {
-        VehicleEntity vehicle = repository.getByIdAndUserId(updateDto.getId(), updateDto.getUserId())
-                .orElseThrow(() -> new DataNotFoundException("Vehicle not found with id: " + updateDto.getId() + " and userId: " + updateDto.getUserId()));
+        VehicleEntity vehicle = repository.findById(updateDto.getId())
+                .orElseThrow(() -> new DataNotFoundException("Vehicle not found with id: " + updateDto.getId()));
 
         var vehicleType = vehicleTypeRepository.findById(updateDto.getVehicleTypeId())
                 .orElseThrow(() -> new DataNotFoundException("Vehicle type not found with id : " + updateDto.getVehicleTypeId()));

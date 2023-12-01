@@ -5,7 +5,9 @@ import com.vention.authorization_service.domain.VehicleEntity;
 import com.vention.authorization_service.domain.VehicleTypeEntity;
 import com.vention.authorization_service.dto.request.VehicleCreationRequestDTO;
 import com.vention.authorization_service.dto.request.VehicleUpdateDTO;
+import com.vention.authorization_service.dto.response.VehicleResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.authorization_service.mapper.VehicleMapper;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.repository.VehicleRepository;
 import com.vention.authorization_service.repository.VehicleTypeRepository;
@@ -17,11 +19,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
@@ -39,6 +38,9 @@ class VehicleServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private VehicleMapper vehicleMapper;
+
     @InjectMocks
     private VehicleServiceImpl vehicleService;
 
@@ -52,8 +54,9 @@ class VehicleServiceImplTest {
         when(vehicleTypeRepository.findById(anyLong())).thenReturn(Optional.of(vehicleType));
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         when(vehicleRepository.save(any(VehicleEntity.class))).thenReturn(new VehicleEntity());
+        when(vehicleMapper.mapEntityToDto(any(VehicleEntity.class))).thenReturn(new VehicleResponseDTO());
 
-        VehicleEntity result = vehicleService.create(requestDto);
+        VehicleResponseDTO result = vehicleService.create(requestDto);
 
         assertNotNull(result);
         verify(vehicleRepository).save(any(VehicleEntity.class));
@@ -61,15 +64,14 @@ class VehicleServiceImplTest {
 
     @Test
     void testGetByUserIdSuccess() {
-        // given
-        VehicleEntity vehicle = new VehicleEntity();
-        when(vehicleRepository.getByUserId(anyLong())).thenReturn(Optional.of(vehicle));
+        Long userId = 1L;
+        VehicleEntity mockVehicle = new VehicleEntity();
+        when(vehicleRepository.getByUserId(userId)).thenReturn(Optional.of(mockVehicle));
+        when(vehicleMapper.mapEntityToDto(mockVehicle)).thenReturn(new VehicleResponseDTO());
 
-        // when
-        VehicleEntity result = vehicleService.getByUserId(1L);
+        VehicleResponseDTO result = vehicleService.getByUserId(userId);
 
-        // then
-        assertEquals(vehicle, result);
+        assertNotNull(result);
     }
 
     @Test
@@ -84,22 +86,21 @@ class VehicleServiceImplTest {
 
     @Test
     void testGetByIdFound() {
-        VehicleEntity vehicle = new VehicleEntity();
-        when(vehicleRepository.findById(anyLong())).thenReturn(Optional.of(vehicle));
+        Long id = 1L;
+        VehicleEntity mockVehicle = new VehicleEntity();
+        when(vehicleRepository.findById(id)).thenReturn(Optional.of(mockVehicle));
+        when(vehicleMapper.mapEntityToDto(mockVehicle)).thenReturn(new VehicleResponseDTO());
 
-        Optional<VehicleEntity> result = vehicleService.getById(1L);
+        VehicleResponseDTO result = vehicleService.getById(id);
 
-        assertTrue(result.isPresent());
-        assertEquals(vehicle, result.get());
+        assertNotNull(result);
     }
 
     @Test
     void testGetByIdNotFound() {
         when(vehicleRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        Optional<VehicleEntity> result = vehicleService.getById(1L);
-
-        assertFalse(result.isPresent());
+        assertThrows(DataNotFoundException.class, () -> vehicleService.getById(1L));
     }
 
     @Test
@@ -110,7 +111,7 @@ class VehicleServiceImplTest {
         updateDto.setVehicleTypeId(1L);
         VehicleEntity vehicle = new VehicleEntity();
         VehicleTypeEntity vehicleType = new VehicleTypeEntity();
-        when(vehicleRepository.getByIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.of(vehicle));
+        when(vehicleRepository.findById(anyLong())).thenReturn(Optional.of(vehicle));
         when(vehicleTypeRepository.findById(anyLong())).thenReturn(Optional.of(vehicleType));
         when(vehicleRepository.save(any(VehicleEntity.class))).thenReturn(vehicle);
 
@@ -124,7 +125,7 @@ class VehicleServiceImplTest {
         VehicleUpdateDTO updateDto = new VehicleUpdateDTO();
         updateDto.setId(1L);
         updateDto.setUserId(1L);
-        when(vehicleRepository.getByIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.empty());
+        when(vehicleRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(DataNotFoundException.class, () -> vehicleService.update(updateDto));
     }

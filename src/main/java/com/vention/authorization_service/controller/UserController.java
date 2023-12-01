@@ -3,7 +3,6 @@ package com.vention.authorization_service.controller;
 import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
-import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.service.UserService;
 import jakarta.validation.Valid;
@@ -38,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> registerUser(@Valid @RequestBody UserProfileFillRequestDTO request) {
+    public ResponseEntity<UserUpdateResponseDTO> fillProfile(@Valid @RequestBody UserProfileFillRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.fillProfile(request));
     }
 

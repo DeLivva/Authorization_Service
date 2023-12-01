@@ -1,6 +1,7 @@
 package com.vention.authorization_service.controller;
 
 import com.vention.authorization_service.domain.VehicleTypeEntity;
+import com.vention.authorization_service.dto.response.VehicleTypeResponseDTO;
 import com.vention.authorization_service.service.VehicleTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,14 +25,14 @@ public class VehicleTypeController {
     private final VehicleTypeService service;
 
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody VehicleTypeEntity vehicleType) {
-        service.create(vehicleType);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<VehicleTypeResponseDTO> create(@RequestBody VehicleTypeEntity vehicleType) {
+        VehicleTypeResponseDTO vehicleTypeResponseDTO = service.create(vehicleType);
+        return new ResponseEntity<>(vehicleTypeResponseDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<VehicleTypeEntity>> getAll() {
-        List<VehicleTypeEntity> vehicleTypes = service.getAll();
+    public ResponseEntity<List<VehicleTypeResponseDTO>> getAll() {
+        List<VehicleTypeResponseDTO> vehicleTypes = service.getAll();
         return ResponseEntity.ok(vehicleTypes);
     }
 
