@@ -1,6 +1,8 @@
 name: DeLivva Authorization CI
 
-on: [push]
+on:
+  push:
+    branches: [develop]
 jobs:
   run-test:
     services:
