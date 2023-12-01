@@ -15,10 +15,10 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Initialize Database
         run: |
           psql -h localhost -U ${{ secrets.POSTGRES_USER }} -c "CREATE DATABASE IF NOT EXISTS delivva_authorization;"
-      - uses: actions/checkout@v3
       - name: Checkout 'develop' branch
         run: |
          git fetch origin develop
