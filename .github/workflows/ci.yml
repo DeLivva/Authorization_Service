@@ -3,6 +3,34 @@ name: CI
 on: [push]
 
 jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        ports:
+          - "5433:5432"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+  pgadmin:
+    runs-on: ubuntu-latest
+    services:
+      pgadmin:
+        image: dpage/pgadmin4
+        env:
+          PGADMIN_DEFAULT_EMAIL: ${{ secrets.PGADMIN_DEFAULT_EMAIL }}
+          PGADMIN_DEFAULT_PASSWORD: ${{ secrets.PGADMIN_DEFAULT_PASSWORD }}
+        ports:
+          - "5051:80"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
   run-test:
     runs-on: ubuntu-latest
 
