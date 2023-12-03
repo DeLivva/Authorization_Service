@@ -3,34 +3,6 @@ name: CI
 on: [push]
 
 jobs:
-  postgres:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        ports:
-          - "5433:5432"
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-  pgadmin:
-    runs-on: ubuntu-latest
-    services:
-      pgadmin:
-        image: dpage/pgadmin4
-        env:
-          PGADMIN_DEFAULT_EMAIL: ${{ secrets.PGADMIN_DEFAULT_EMAIL }}
-          PGADMIN_DEFAULT_PASSWORD: ${{ secrets.PGADMIN_DEFAULT_PASSWORD }}
-        ports:
-          - "5051:80"
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
   run-test:
     runs-on: ubuntu-latest
 
@@ -45,16 +17,11 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v4
       - name: Set up JDK
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
           java-version: '17'
-
-      - name: Build and Test with Maven
-        run: |
-          mvn clean install
-          mvn test
+          distribution: 'temurin'
+      - name: Run the Maven verify phase
+        run: mvn --batch-mode --update-snapshots verify
