@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  run-test:
+  tests:
     runs-on: ubuntu-latest
 
     services:
@@ -23,5 +23,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Run the Maven verify phase
-        run: mvn --batch-mode --update-snapshots verify
+      - name: Maven test
+        run: mvn test
