@@ -1,42 +1,32 @@
-name: DeLivva Authorization CI
+name: OUR PROJECT
 
 on: [push]
+
 jobs:
   run-test:
+    runs-on: ubuntu-latest
+
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:14.8
         env:
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DB_URL:jdbc: postgresql://postgres:5432/delivva_auth_db
+          LOCAL_DB_URL: jdbc:postgresql://localhost:5432/delivva-authorization
+          DB_USERNAME: postgres
+          DB_PASSWORD: 6040
         ports:
           - 5432:5432
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
 
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Initialize Database
-        run: |
-          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d postgres -c "SELECT 'CREATE DATABASE delivva_authorization' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'delivva_authorization');"
-      
+        - name: Set up JDK
+          uses: actions/setup-java@v2
+          with:
+            distribution: 'timurin'
+            java-version: '17'
+        - name: Build with Maven
+          run: mvn clean install
 
-      - name: Checkout 'develop' branch
-        run: |
-         git fetch origin develop
-         git checkout develop
-
-      - name: Debug Logging
-        run: |
-          echo "POSTGRES_DB: ${{ secrets.POSTGRES_DB }}"
-          echo "POSTGRES_USER: ${{ secrets.POSTGRES_USER }}"
-          echo "POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}"
-      - uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Build with Maven
-        run: mvn clean install
-
+        - name: RUn tests
+          run: mvn test
