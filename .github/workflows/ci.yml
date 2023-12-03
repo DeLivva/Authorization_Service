@@ -1,31 +1,33 @@
 name: CI
 
 on: [push]
+
 jobs:
-  postgres:
+  run-test:
     runs-on: ubuntu-latest
+
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:14.8
         env:
-          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 6040
         ports:
-          - "5433:5432"
+          - 5432:5432
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-  pgadmin:
-    runs-on: ubuntu-latest
-    services:
-      pgadmin:
-        image: dpage/pgadmin4
-        env:
-          PGADMIN_DEFAULT_EMAIL: ${{ secrets.PGADMIN_DEFAULT_EMAIL }}
-          PGADMIN_DEFAULT_PASSWORD: ${{ secrets.PGADMIN_DEFAULT_PASSWORD }}
-        ports:
-          - "5051:80"
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Run tests
+        run: mvn test
