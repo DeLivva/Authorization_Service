@@ -2,10 +2,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    url: ${DB_CLOUD_URL}
+    username: ${DB_CLOUD_USER}
+    password: ${DB_CLOUD_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -26,5 +25,16 @@ token :
   expiration:
     seconds: 120
 
-files:
-  image-path: ${IMAGE_PATH}
+cloud:
+  aws:
+    s3bucket:
+      name: ${AWS_S3_BUCKET_NAME}
+      url: ${AWS_S3_URL}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
+    stack:
+      auto: false
+server:
+  port: 5000

@@ -4,6 +4,7 @@ import com.vention.authorization_service.dto.response.GlobalResponseDTO;
 import com.vention.authorization_service.exception.ConfirmationTokenExpiredException;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
+import com.vention.authorization_service.exception.FileConvertingException;
 import com.vention.authorization_service.exception.InvalidFileTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(ConfirmationTokenExpiredException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @ExceptionHandler(value = FileConvertingException.class)
+    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(FileConvertingException e) {
+        log.warn(e.getMessage());
+        return getResponse(e.getMessage(), HttpStatus.NOT_ACCEPTABLE.value());
     }
 
     private ResponseEntity<GlobalResponseDTO> getResponse(String message, int status) {
