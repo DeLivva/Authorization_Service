@@ -14,7 +14,7 @@ public interface UserService {
 
     boolean isEligibleForRegistration(String email);
 
-    UserEntity fillProfile(UserProfileFillRequestDTO request);
+    UserUpdateResponseDTO fillProfile(UserProfileFillRequestDTO request);
 
     String uploadProfilePicture(Long userId, MultipartFile file);
 
