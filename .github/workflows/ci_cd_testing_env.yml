@@ -24,10 +24,6 @@ jobs:
           name: artifact
           path: target/authorization_service-0.0.1-SNAPSHOT.jar
 
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
   deploy:
     needs: build
     name: deploy
