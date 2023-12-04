@@ -4,6 +4,7 @@ import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
+import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
         repository.save(user);
-        return userMapper.mapUserEntityToResponseDto(user);
+        return userMapper.mapUserEntityToUpdateResponseDto(user);
     }
 
     @Override
@@ -116,5 +117,12 @@ public class UserServiceImpl implements UserService {
         );
         user.setIsDeleted(true);
         repository.save(user);
+    }
+
+    @Override
+    public UserResponseDTO getById(Long id) {
+        var userEntity = repository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("User not fount on id: " + id));
+        return userMapper.mapEntityToResponseDto(userEntity);
     }
 }
