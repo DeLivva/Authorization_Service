@@ -2,6 +2,7 @@ package com.vention.authorization_service.controller;
 
 import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
+import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.service.UserService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -46,5 +48,11 @@ public class UserController {
                                                    @RequestParam("image") MultipartFile file) {
         String link = userService.uploadProfilePicture(userId, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(link);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
+        UserResponseDTO userResponse = userService.getById(id);
+        return ResponseEntity.ok(userResponse);
     }
 }

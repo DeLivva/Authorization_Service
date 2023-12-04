@@ -130,7 +130,7 @@ class UserServiceImplTest {
 
         when(userRepository.findById(request.getUserId())).thenReturn(Optional.of(user));
         when(securityCredentialRepository.findByUsername(request.getUsername())).thenReturn(Optional.empty());
-        when(userMapper.mapUserEntityToResponseDto(user)).thenReturn(responseDTO);
+        when(userMapper.mapUserEntityToUpdateResponseDto(user)).thenReturn(responseDTO);
 
         user.setCredentials(credentials);
 
