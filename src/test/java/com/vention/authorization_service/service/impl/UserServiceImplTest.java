@@ -8,6 +8,7 @@ import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
+import com.vention.authorization_service.mapper.UserMapper;
 import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,9 @@ class UserServiceImplTest {
 
     @Mock
     private SecurityCredentialRepository securityCredentialRepository;
+
+    @Mock
+    private UserMapper userMapper;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -119,23 +123,24 @@ class UserServiceImplTest {
         // when
         UserProfileFillRequestDTO request =
                 new UserProfileFillRequestDTO(1L, "Abbos", "Akramov", "adam123", "911980669");
-
+        UserUpdateResponseDTO responseDTO = new UserUpdateResponseDTO("Abbos", "Akramov", "adam123", "911980669", "test@gmail.com");
         UserEntity user = new UserEntity();
         SecurityCredentialEntity credentials = new SecurityCredentialEntity();
         user.setCredentials(credentials);
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(securityCredentialRepository.findByUsername("adam123")).thenReturn(Optional.empty());
-        when(userRepository.save(any(UserEntity.class))).thenReturn(user);
-        when(securityCredentialRepository.save(any(SecurityCredentialEntity.class))).thenReturn(credentials);
+        when(userRepository.findById(request.getUserId())).thenReturn(Optional.of(user));
+        when(securityCredentialRepository.findByUsername(request.getUsername())).thenReturn(Optional.empty());
+        when(userMapper.mapUserEntityToResponseDto(user)).thenReturn(responseDTO);
 
-        UserEntity updatedUser = userService.fillProfile(request);
+        user.setCredentials(credentials);
+
+        UserUpdateResponseDTO response = userService.fillProfile(request);
 
         // then
-        assertEquals("Abbos", updatedUser.getFirstName());
-        assertEquals("Akramov", updatedUser.getLastName());
-        assertEquals("911980669", updatedUser.getPhoneNumber());
-        assertEquals("adam123", updatedUser.getCredentials().getUsername());
+        assertEquals("Abbos", response.getFirstName());
+        assertEquals("Akramov", response.getLastName());
+        assertEquals("911980669", response.getPhoneNumber());
+        assertEquals("adam123", response.getUsername());
         verify(userRepository, times(1)).save(user);
         verify(securityCredentialRepository, times(1)).save(credentials);
     }

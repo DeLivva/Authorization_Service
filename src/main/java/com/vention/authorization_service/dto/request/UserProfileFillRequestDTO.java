@@ -28,6 +28,5 @@ public class UserProfileFillRequestDTO {
     private String username;
 
     @NotNull
-    @Pattern(regexp = "^\\d{7,15}$")
     private String phoneNumber;
 }
