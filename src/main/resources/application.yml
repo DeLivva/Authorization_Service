@@ -2,9 +2,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: ${DB_CLOUD_URL}
-    username: ${DB_CLOUD_USER}
-    password: ${DB_CLOUD_PASSWORD}
+    url: jdbc:postgresql://delivva-auth-service.ci4pk90j2559.us-east-1.rds.amazonaws.com:5432/delivva_auth
+    username: delivva
+    password: password
   jpa:
     hibernate:
       ddl-auto: validate
@@ -28,12 +28,12 @@ token :
 cloud:
   aws:
     s3bucket:
-      name: ${AWS_S3_BUCKET_NAME}
-      url: ${AWS_S3_URL}
+      name: delivva-auth-storage
+      url: https://delivva-auth-storage.s3.amazonaws.com/
     credentials:
-      access-key: ${AWS_ACCESS_KEY}
-      secret-key: ${AWS_SECRET_KEY}
-    region: ${AWS_REGION}
+      access-key: AKIAXUNKWL54RPC5ENI3
+      secret-key: 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
+    region: us-east-1
     stack:
       auto: false
 server:
