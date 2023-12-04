@@ -40,8 +40,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_TEST_ENVIRONMENT }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY_TEST_ENVIRONMENT }}
-          application_name:  test-vention-app
-          environment_name: delivva-auth-env
+          application_name: delivva-testing-environment
+          environment_name: Delivva-testing-environment-env
           version_label: ${{ github.SHA }}
           region: us-east-1
           deployment_package: authorization_service-0.0.1-SNAPSHOT.jar
