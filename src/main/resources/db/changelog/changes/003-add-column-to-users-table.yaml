@@ -10,3 +10,12 @@ databaseChangeLog:
                   name: is_deleted
                   type: boolean
                   defaultValue: false
+
+  - changeSet:
+      id: 9
+      author: Abbos
+      changes:
+        - modifyDataType:
+            tableName: vehicle
+            columnName: type_id
+            newDataType: bigint
