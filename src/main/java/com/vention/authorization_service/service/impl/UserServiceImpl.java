@@ -125,4 +125,16 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new DataNotFoundException("User not fount on id: " + id));
         return userMapper.mapEntityToResponseDto(userEntity);
     }
+
+    @Override
+    public UserResponseDTO getByUsername(String username) {
+        SecurityCredentialEntity credential = securityCredentialRepository.findByUsername(username).orElseThrow(
+                () -> new DataNotFoundException("User with this username not found: " + username)
+        );
+        UserEntity user = credential.getUser();
+        if(user.getIsDeleted()) {
+            throw new DataNotFoundException("User with this username not found: " + username);
+        }
+        return userMapper.mapEntityToResponseDto(user);
+    }
 }

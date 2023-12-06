@@ -3,6 +3,7 @@ package com.vention.authorization_service.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,4 +25,7 @@ public class SecurityCredentialEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private UserRoleEntity role;
+
+    @OneToOne(mappedBy = "credentials")
+    private UserEntity user;
 }
