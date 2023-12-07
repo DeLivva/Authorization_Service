@@ -12,7 +12,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database: postgresql    
+    database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
@@ -20,8 +20,15 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 646607232733-hufqatn96p95k8vprtfr0dpcr1h3elq4.apps.googleusercontent.com
+            client-secret: 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
 
-token :
+token:
   expiration:
     seconds: 120
 
@@ -38,3 +45,9 @@ cloud:
       auto: false
 server:
   port: 5000
+
+jwt:
+  secret:
+    key: 753778214125442A472IkphdZSIsImasV4cCIee6MTY4sdNzUwMTQwN3F452848567890iuyiu67567886578uyutuio78654678976549eyJS678965467uior678545
+  access:
+    expiry: 6000000

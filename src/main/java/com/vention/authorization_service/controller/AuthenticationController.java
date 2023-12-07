@@ -1,18 +1,22 @@
 package com.vention.authorization_service.controller;
 
+import com.vention.authorization_service.dto.request.UserLoginRequestDto;
 import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
+import com.vention.authorization_service.dto.response.JwtResponse;
 import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
 import com.vention.authorization_service.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,14 +31,24 @@ public class AuthenticationController {
     }
 
     @GetMapping("/confirm-email")
-    public ResponseEntity<Void> confirmEmail(@RequestParam String token){
+    public ResponseEntity<Void> confirmEmail(@RequestParam String token) {
         authenticationService.confirmEmail(token);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/resend-confirmation")
-    public ResponseEntity<Void> resendConfirmationToken(@RequestParam String email){
+    public ResponseEntity<Void> resendConfirmationToken(@RequestParam String email) {
         authenticationService.sendConfirmationToken(email);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody UserLoginRequestDto userLoginRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(authenticationService.login(userLoginRequestDto));
+    }
+
+    @GetMapping("/login-oauth")
+    public ResponseEntity<JwtResponse> loginOauth(OAuth2AuthenticationToken token) {
+        return ResponseEntity.status(HttpStatus.OK).body(authenticationService.loginOAuth(token));
     }
 }

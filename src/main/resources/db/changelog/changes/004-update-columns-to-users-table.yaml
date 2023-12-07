@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10
+      author: Hasilbek
+      changes:
+        - dropColumn:
+            tableName: users
+            columnName: is_enabled
+        - dropColumn:
+            tableName: users
+            columnName: is_deleted
+
+  - changeSet:
+      id: 11
+      author: Hasilbek
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: user_state
+                  type: varchar

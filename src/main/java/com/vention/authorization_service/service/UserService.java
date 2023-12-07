@@ -24,4 +24,6 @@ public interface UserService {
     void deleteUser(Long userId);
 
     UserResponseDTO getById(Long id);
+
+    UserEntity getByUsername(String username);
 }
