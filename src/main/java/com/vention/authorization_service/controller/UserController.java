@@ -55,4 +55,9 @@ public class UserController {
         UserResponseDTO userResponse = userService.getById(id);
         return ResponseEntity.ok(userResponse);
     }
+
+    @GetMapping("/by-username")
+    public ResponseEntity<UserResponseDTO> getByUsername(@RequestParam String username) {
+        return ResponseEntity.ok(userService.getByUsername(username));
+    }
 }
