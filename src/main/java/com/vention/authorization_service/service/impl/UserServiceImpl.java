@@ -2,6 +2,7 @@ package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
+import com.vention.authorization_service.domain.UserState;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserResponseDTO;
@@ -45,10 +46,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isEligibleForRegistration(String email) {
         var user = repository.findByEmail(email);
-        return user.isEmpty() || user.get().getIsDeleted();
+        return user.isEmpty();
     }
 
     @Override
+    @Transactional
     public UserUpdateResponseDTO fillProfile(UserProfileFillRequestDTO request) {
         var user = repository.findById(request.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("User not found on id: " + request.getUserId()));
@@ -63,6 +65,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
+        user.setUserState(UserState.AUTHORIZED);
         repository.save(user);
         return userMapper.mapUserEntityToUpdateResponseDto(user);
     }
@@ -115,7 +118,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user = repository.findById(userId).orElseThrow(
                 () -> new DataNotFoundException("User with this id not found: " + userId)
         );
-        user.setIsDeleted(true);
+        user.setUserState(UserState.DELETED);
         repository.save(user);
     }
 
@@ -127,14 +130,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO getByUsername(String username) {
-        SecurityCredentialEntity credential = securityCredentialRepository.findByUsername(username).orElseThrow(
-                () -> new DataNotFoundException("User with this username not found: " + username)
-        );
-        UserEntity user = credential.getUser();
-        if(user.getIsDeleted()) {
-            throw new DataNotFoundException("User with this username not found: " + username);
-        }
-        return userMapper.mapEntityToResponseDto(user);
+    public UserEntity getByUsername(String username) {
+        return repository.findByCredentials_Username(username)
+                .orElseThrow(() -> new DataNotFoundException("User not found with username: " + username));
     }
 }

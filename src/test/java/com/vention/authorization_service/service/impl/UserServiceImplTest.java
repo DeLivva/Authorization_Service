@@ -2,6 +2,7 @@ package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
+import com.vention.authorization_service.domain.UserState;
 import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
@@ -181,7 +182,7 @@ class UserServiceImplTest {
         userService.deleteUser(request.getUserId());
         verify(userRepository, times(1)).findById(1L);
         verify(userRepository, times(1)).save(user);
-        assertTrue(user.getIsDeleted());
+        assertEquals(user.getUserState(), UserState.DELETED);
     }
 
     @Test

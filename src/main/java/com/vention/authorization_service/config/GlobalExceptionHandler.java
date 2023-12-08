@@ -6,6 +6,7 @@ import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.exception.FileConvertingException;
 import com.vention.authorization_service.exception.InvalidFileTypeException;
+import com.vention.authorization_service.exception.LoginFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(FileConvertingException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.NOT_ACCEPTABLE.value());
+    }
+
+    @ExceptionHandler(value = LoginFailedException.class)
+    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(LoginFailedException e) {
+        log.warn(e.getMessage());
+        return getResponse(e.getMessage(), HttpStatus.FORBIDDEN.value());
     }
 
     private ResponseEntity<GlobalResponseDTO> getResponse(String message, int status) {
