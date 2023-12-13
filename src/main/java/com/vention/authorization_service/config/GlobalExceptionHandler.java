@@ -10,6 +10,7 @@ import com.vention.authorization_service.exception.LoginFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -49,6 +50,11 @@ public class GlobalExceptionHandler {
         return getResponse(e.getMessage(), HttpStatus.FORBIDDEN.value());
     }
 
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(MethodArgumentNotValidException e) {
+        log.warn(e.getMessage());
+        return getResponse("Validation failed", HttpStatus.BAD_REQUEST.value());
+    }
     private ResponseEntity<GlobalResponseDTO> getResponse(String message, int status) {
         return ResponseEntity
                 .status(status)
