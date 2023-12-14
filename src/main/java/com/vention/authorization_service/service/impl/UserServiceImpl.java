@@ -10,6 +10,7 @@ import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.exception.InvalidFileTypeException;
+import com.vention.authorization_service.exception.LoginFailedException;
 import com.vention.authorization_service.mapper.UserMapper;
 import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.repository.UserRepository;
@@ -58,6 +59,11 @@ public class UserServiceImpl implements UserService {
         if (securityCredentialRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new DuplicateDataException("This username already exist: " + request.getUsername());
         }
+
+        if(!user.getUserState().equals(UserState.VERIFIED)){
+            throw new LoginFailedException(user.getUserState().name());
+        }
+
         var credentials = user.getCredentials();
         credentials.setUsername(request.getUsername());
         securityCredentialRepository.save(credentials);

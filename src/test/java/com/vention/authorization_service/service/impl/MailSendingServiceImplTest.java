@@ -2,6 +2,7 @@ package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.ConfirmationToken;
 import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.authorization_service.service.rabbitmq.producer.RabbitMQProducer;
 import com.vention.authorization_service.repository.ConfirmationTokenRepository;
 import com.vention.authorization_service.service.MailSendingService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,12 +26,14 @@ import static org.mockito.Mockito.verify;
 class MailSendingServiceImplTest {
     @Mock
     private ConfirmationTokenRepository confirmationTokenRepository;
+    @Mock
+    private RabbitMQProducer rabbitMQProducer;
     private MailSendingService mailSendingService;
     private ConfirmationToken testToken;
 
     @BeforeEach
     void setUp() {
-        mailSendingService = new MailSendingServiceImpl(confirmationTokenRepository);
+        mailSendingService = new MailSendingServiceImpl(confirmationTokenRepository, rabbitMQProducer);
         testToken = mock();
     }
 
