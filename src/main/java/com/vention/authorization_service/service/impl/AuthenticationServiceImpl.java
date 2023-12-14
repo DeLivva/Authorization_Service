@@ -23,6 +23,7 @@ import com.vention.authorization_service.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final CustomUserDetailsServiceImpl userDetailsService;
 
 
+    @SneakyThrows
     @Override
     @Transactional
     public UserRegistrationResponseDTO registerUser(UserRegistrationRequestDTO request) {
@@ -84,6 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    @SneakyThrows
     @Override
     public void sendConfirmationToken(String email) {
         UserEntity user = userService.getByEmail(email);

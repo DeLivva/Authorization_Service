@@ -3,6 +3,7 @@ package com.vention.authorization_service.service.impl;
 import com.vention.authorization_service.domain.ConfirmationToken;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.authorization_service.service.rabbitmq.producer.RabbitMQProducer;
 import com.vention.authorization_service.repository.ConfirmationTokenRepository;
 import com.vention.authorization_service.service.MailSendingService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class MailSendingServiceImpl implements MailSendingService {
     @Value("${token.expiration.seconds}")
     private Long tokenExpiry;
     private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final RabbitMQProducer producer;
 
     @Override
     public void sendConfirmationToken(UserEntity user) {
@@ -27,7 +29,7 @@ public class MailSendingServiceImpl implements MailSendingService {
                 .user(user)
                 .build();
         confirmationTokenRepository.save(confirmationToken);
-        sendMessage(user.getEmail(), confirmationToken.getToken());
+        producer.sendMessage(user.getEmail(), confirmationToken.getToken());
     }
 
     @Override
@@ -42,9 +44,4 @@ public class MailSendingServiceImpl implements MailSendingService {
         return confirmationTokenRepository.save(token);
     }
 
-    private void sendMessage(String email, String token) {
-
-        //sends message to rabbitMQ
-
-    }
 }

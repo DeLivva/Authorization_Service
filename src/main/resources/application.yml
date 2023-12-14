@@ -27,6 +27,10 @@ spring:
           google:
             client-id: 646607232733-hufqatn96p95k8vprtfr0dpcr1h3elq4.apps.googleusercontent.com
             client-secret: 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
+  rabbitmq:
+    username: Delivva
+    password: delivvadevelopers4
+    addresses: amqps://b-24e330b5-34c3-48c1-87df-d65aefcd7ec3.mq.us-east-1.amazonaws.com:5671
 
 token:
   expiration:
@@ -51,3 +55,9 @@ jwt:
     key: 753778214125442A472IkphdZSIsImasV4cCIee6MTY4sdNzUwMTQwN3F452848567890iuyiu67567886578uyutuio78654678976549eyJS678965467uior678545
   access:
     expiry: 6000000
+
+rabbitmq:
+  exchange:
+    name: notification_direct_exchange
+  routing:
+    key: authorization_service_routing_key
