@@ -9,6 +9,7 @@ import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
+import com.vention.authorization_service.exception.LoginFailedException;
 import com.vention.authorization_service.mapper.UserMapper;
 import com.vention.authorization_service.repository.SecurityCredentialRepository;
 import com.vention.authorization_service.repository.UserRepository;
@@ -255,5 +256,22 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).findById(1L);
         verify(userRepository, times(1)).save(user);
         verify(securityCredentialRepository, times(1)).save(credentials);
+    }
+
+    @Test
+    public void testFillProfileWhenNotVerifiedAccountFail() {
+        // when
+        UserProfileFillRequestDTO request =
+                new UserProfileFillRequestDTO(1L, "Test", "Test", "test", "test");
+        UserEntity user = new UserEntity();
+        SecurityCredentialEntity credentials = new SecurityCredentialEntity();
+        user.setCredentials(credentials);
+
+        when(userRepository.findById(request.getUserId())).thenReturn(Optional.of(user));
+        when(securityCredentialRepository.findByUsername(request.getUsername())).thenReturn(Optional.empty());
+
+        user.setCredentials(credentials);
+
+        assertThrows(LoginFailedException.class, () -> userService.fillProfile(request));
     }
 }
