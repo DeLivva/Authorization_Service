@@ -128,6 +128,7 @@ class UserServiceImplTest {
         UserEntity user = new UserEntity();
         SecurityCredentialEntity credentials = new SecurityCredentialEntity();
         user.setCredentials(credentials);
+        user.setUserState(UserState.VERIFIED);
 
         when(userRepository.findById(request.getUserId())).thenReturn(Optional.of(user));
         when(securityCredentialRepository.findByUsername(request.getUsername())).thenReturn(Optional.empty());
