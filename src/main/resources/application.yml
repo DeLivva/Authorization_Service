@@ -34,7 +34,7 @@ spring:
 
 token:
   expiration:
-    seconds: 3600
+    seconds: 60
 
 cloud:
   aws:
