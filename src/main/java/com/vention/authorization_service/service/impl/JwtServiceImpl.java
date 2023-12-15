@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -26,7 +27,7 @@ public class JwtServiceImpl implements JwtService {
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .setSubject(userEntity.getEmail())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + accessTokenExpiry))
+                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(accessTokenExpiry)))
                 .addClaims(Map.of("authorities", userEntity.getAuthorities()))
                 .compact();
     }
