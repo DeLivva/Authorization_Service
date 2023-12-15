@@ -25,7 +25,7 @@ public class MailSendingServiceImpl implements MailSendingService {
     public void sendConfirmationToken(UserEntity user) {
         ConfirmationToken confirmationToken = ConfirmationToken.builder()
                 .issuedAt(Timestamp.valueOf(LocalDateTime.now()))
-                .expiredAt(Timestamp.valueOf(LocalDateTime.now().plusSeconds(tokenExpiry)))
+                .expiredAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(tokenExpiry)))
                 .user(user)
                 .build();
         confirmationTokenRepository.save(confirmationToken);
