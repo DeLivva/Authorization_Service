@@ -1,5 +1,6 @@
 package com.vention.authorization_service.dto.request;
 
+import com.vention.authorization_service.domain.NotificationType;
 import lombok.Builder;
 import lombok.Data;
 
