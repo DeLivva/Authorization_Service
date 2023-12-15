@@ -15,7 +15,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -26,6 +25,7 @@ public class SecurityConfig {
     private final JwtFilterToken filterToken;
     private final String[] permitAll = {
             "/api/v1/auth/login",
+            "/api/v1/auth/login-oauth",
             "/api/v1/auth/register",
             "/api/v1/auth/confirm-email",
             "/api/v1/auth/resend-confirmation",
@@ -40,7 +40,6 @@ public class SecurityConfig {
                         .requestMatchers(permitAll).permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/users").permitAll()
                         .anyRequest().authenticated())
-                .oauth2Login(Customizer.withDefaults())
                 .addFilterBefore(filterToken, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

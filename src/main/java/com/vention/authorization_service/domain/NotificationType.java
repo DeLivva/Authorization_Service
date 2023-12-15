@@ -1,4 +1,4 @@
-package com.vention.authorization_service.dto.request;
+package com.vention.authorization_service.domain;
 
 public enum NotificationType {
     CONFIRMATION_TOKEN,

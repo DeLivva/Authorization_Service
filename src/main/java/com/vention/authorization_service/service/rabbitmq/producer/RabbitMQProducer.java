@@ -3,7 +3,7 @@ package com.vention.authorization_service.service.rabbitmq.producer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vention.authorization_service.dto.request.ConfirmationTokenDto;
 import com.vention.authorization_service.dto.request.GeneralDto;
-import com.vention.authorization_service.dto.request.NotificationType;
+import com.vention.authorization_service.domain.NotificationType;
 import com.vention.general.lib.exceptions.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

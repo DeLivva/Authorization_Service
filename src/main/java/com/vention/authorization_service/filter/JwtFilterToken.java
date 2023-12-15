@@ -1,7 +1,6 @@
 package com.vention.authorization_service.filter;
 
 import com.vention.authorization_service.service.AuthenticationService;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,7 +32,7 @@ public class JwtFilterToken extends OncePerRequestFilter {
         token = token.replace("Bearer ", "");
         try {
             authenticationService.authenticate(token, request);
-        } catch (ExpiredJwtException e) {
+        } catch (RuntimeException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
