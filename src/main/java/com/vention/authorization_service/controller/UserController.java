@@ -44,8 +44,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.fillProfile(request));
     }
 
-    @PostMapping("/picture/{user-id}")
-    public ResponseEntity<String> uploadProfilePic(@PathVariable("user-id") Long userId,
+    @PostMapping("/picture")
+    public ResponseEntity<String> uploadProfilePic(@RequestParam Long userId,
                                                    @RequestPart("image") MultipartFile file) {
         String link = userService.uploadProfilePicture(userId, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(link);
