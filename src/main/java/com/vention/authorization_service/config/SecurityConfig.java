@@ -15,7 +15,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -28,7 +27,7 @@ public class SecurityConfig {
             "/api/v1/auth/login",
             "/api/v1/auth/register",
             "/api/v1/auth/confirm-email",
-            "/api/v1/auth/resend-confirmation",
+            "/api/v1/auth/resend-confirmation"
             };
 
     @Bean
@@ -38,7 +37,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(permitAll).permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/users/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(Customizer.withDefaults())
                 .addFilterBefore(filterToken, UsernamePasswordAuthenticationFilter.class)

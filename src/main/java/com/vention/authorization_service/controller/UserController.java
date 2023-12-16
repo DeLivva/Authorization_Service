@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,10 +42,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.fillProfile(request));
     }
 
-    @PostMapping("/picture")
-    public ResponseEntity<String> uploadProfilePic(@RequestParam Long userId,
-                                                   @RequestPart("image") MultipartFile file) {
-        String link = userService.uploadProfilePicture(userId, file);
+    @PostMapping("/picture/{userId}")
+    public ResponseEntity<String> uploadProfilePic(@PathVariable Long userId, MultipartFile image) {
+        String link = userService.uploadProfilePicture(userId, image);
         return ResponseEntity.status(HttpStatus.CREATED).body(link);
     }
 
