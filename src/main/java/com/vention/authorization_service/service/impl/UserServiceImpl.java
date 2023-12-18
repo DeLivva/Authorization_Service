@@ -5,6 +5,7 @@ import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserState;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
+import com.vention.authorization_service.dto.response.CourierResponseDTO;
 import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.exception.DataNotFoundException;
@@ -21,6 +22,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +64,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateDataException("This username already exist: " + request.getUsername());
         }
 
-        if(!user.getUserState().equals(UserState.VERIFIED)){
+        if (!user.getUserState().equals(UserState.VERIFIED)) {
             throw new LoginFailedException(user.getUserState().name());
         }
 
@@ -139,5 +143,11 @@ public class UserServiceImpl implements UserService {
     public UserEntity getByUsername(String username) {
         return repository.findByCredentials_Username(username)
                 .orElseThrow(() -> new DataNotFoundException("User not found with username: " + username));
+    }
+
+    @Override
+    public List<CourierResponseDTO> getAllByCarType(String carType) {
+        return repository.getByCarType(carType).stream()
+                .map(userMapper::mapEntityToCourierResponseDto).collect(Collectors.toList());
     }
 }

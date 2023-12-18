@@ -2,10 +2,13 @@ package com.vention.authorization_service.service;
 
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
-import com.vention.authorization_service.dto.response.UserResponseDTO;
-import org.springframework.web.multipart.MultipartFile;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
+import com.vention.authorization_service.dto.response.CourierResponseDTO;
+import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -26,4 +29,6 @@ public interface UserService {
     UserResponseDTO getById(Long id);
   
     UserEntity getByUsername(String username);
+
+    List<CourierResponseDTO> getAllByCarType(String carType);
 }
