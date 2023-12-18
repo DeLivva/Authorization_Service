@@ -28,7 +28,10 @@ public class SecurityConfig {
             "/api/v1/auth/login-oauth",
             "/api/v1/auth/register",
             "/api/v1/auth/confirm-email",
-            "/api/v1/auth/resend-confirmation"
+            "/api/v1/auth/resend-confirmation",
+            "/api/v1/users/fill-profile",
+            "/api/v1/users/picture/**",
+            "/api/v1/security-credentials"
             };
 
     @Bean
@@ -38,7 +41,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(permitAll).permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/v1/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/users/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(filterToken, UsernamePasswordAuthenticationFilter.class)
                 .build();
