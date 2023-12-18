@@ -30,6 +30,7 @@ public class SecurityConfig {
             "/api/v1/auth/confirm-email",
             "/api/v1/auth/resend-confirmation",
             "/api/v1/users/fill-profile",
+            "/api/v1/users/picture/**",
             "/api/v1/security-credentials"
             };
 
