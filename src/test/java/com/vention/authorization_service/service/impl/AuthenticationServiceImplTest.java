@@ -118,6 +118,8 @@ class AuthenticationServiceImplTest {
         UserLoginRequestDto userLoginRequestDto = new UserLoginRequestDto("test@gmail.com", "test");
         UserEntity userEntity = new UserEntity();
         userEntity.setUserState(UserState.AUTHORIZED);
+        SecurityCredentialEntity securityCredentialEntity = new SecurityCredentialEntity("test", "test", new UserRoleEntity("USER"), userEntity);
+        userEntity.setCredentials(securityCredentialEntity);
 
         when(userService.getByEmail(userLoginRequestDto.getLogin())).thenReturn(userEntity);
         when(jwtService.generateAccessToken(any(UserEntity.class))).thenReturn("testToken");
@@ -147,6 +149,8 @@ class AuthenticationServiceImplTest {
         UserLoginRequestDto userLoginRequestDto = new UserLoginRequestDto("test", "test");
         UserEntity userEntity = new UserEntity();
         userEntity.setUserState(UserState.AUTHORIZED);
+        SecurityCredentialEntity securityCredentialEntity = new SecurityCredentialEntity("test", "test", new UserRoleEntity("USER"), userEntity);
+        userEntity.setCredentials(securityCredentialEntity);
 
         when(userService.getByUsername(userLoginRequestDto.getLogin())).thenReturn(userEntity);
         when(jwtService.generateAccessToken(any(UserEntity.class))).thenReturn("testToken");
@@ -189,6 +193,8 @@ class AuthenticationServiceImplTest {
         UserLoginRequestDto userLoginRequestDto = new UserLoginRequestDto("test", "test");
         UserEntity userEntity = new UserEntity();
         userEntity.setUserState(UserState.VERIFIED);
+        SecurityCredentialEntity securityCredentialEntity = new SecurityCredentialEntity("test", "test", new UserRoleEntity("USER"), userEntity);
+        userEntity.setCredentials(securityCredentialEntity);
 
         when(userService.getByUsername(userLoginRequestDto.getLogin())).thenReturn(userEntity);
 
