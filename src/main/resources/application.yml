@@ -39,11 +39,11 @@ token:
 cloud:
   aws:
     s3bucket:
-      name: delivva-auth-storage
-      url: https://delivva-auth-storage.s3.amazonaws.com/
+      name: delivva-auth-bucket
+      url: https://delivva-auth-bucket.s3.amazonaws.com/
     credentials:
-      access-key: AKIAXUNKWL54RPC5ENI3
-      secret-key: 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
+      access-key: AKIATYEMUHUZRMOW6WAM
+      secret-key: 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
     region: us-east-1
     stack:
       auto: false
