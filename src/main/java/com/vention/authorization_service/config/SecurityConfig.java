@@ -28,7 +28,8 @@ public class SecurityConfig {
             "/api/v1/auth/login-oauth",
             "/api/v1/auth/register",
             "/api/v1/auth/confirm-email",
-            "/api/v1/auth/resend-confirmation"
+            "/api/v1/auth/resend-confirmation",
+            "/api/v1/security-credentials"
             };
 
     @Bean
