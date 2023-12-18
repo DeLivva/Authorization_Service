@@ -3,6 +3,7 @@ package com.vention.authorization_service.controller;
 import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
+import com.vention.authorization_service.dto.response.CourierResponseDTO;
 import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import com.vention.authorization_service.service.UserService;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -52,5 +56,10 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
         UserResponseDTO userResponse = userService.getById(id);
         return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping("/by-car-type")
+    public ResponseEntity<List<CourierResponseDTO>> getAllByCarType(@RequestParam String carType) {
+        return ResponseEntity.ok(userService.getAllByCarType(carType));
     }
 }

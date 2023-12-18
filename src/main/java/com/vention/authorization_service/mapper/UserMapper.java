@@ -2,6 +2,7 @@ package com.vention.authorization_service.mapper;
 
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
+import com.vention.authorization_service.dto.response.CourierResponseDTO;
 import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
 import org.mapstruct.Mapper;
@@ -18,4 +19,8 @@ public interface UserMapper {
     @Mapping(source = "credentials.username", target = "username")
     @Mapping(source = "photo", target = "photoLink")
     UserResponseDTO mapEntityToResponseDto(UserEntity user);
+
+    @Mapping(source = "credentials.username", target = "username")
+    @Mapping(source = "photo", target = "photoLink")
+    CourierResponseDTO mapEntityToCourierResponseDto(UserEntity user);
 }
