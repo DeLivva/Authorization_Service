@@ -1,10 +1,11 @@
 package com.vention.authorization_service.controller;
 
 import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
+import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
+import com.vention.authorization_service.dto.response.CourierResponseDTO;
 import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
-import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -43,10 +46,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.fillProfile(request));
     }
 
-    @PostMapping("/picture/{user-id}")
-    public ResponseEntity<String> uploadProfilePic(@PathVariable("user-id") Long userId,
-                                                   @RequestPart("image") MultipartFile file) {
-        String link = userService.uploadProfilePicture(userId, file);
+    @PostMapping("/picture/{userId}")
+    public ResponseEntity<String> uploadProfilePic(@PathVariable Long userId, MultipartFile image) {
+        String link = userService.uploadProfilePicture(userId, image);
         return ResponseEntity.status(HttpStatus.CREATED).body(link);
     }
 
@@ -54,5 +56,10 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
         UserResponseDTO userResponse = userService.getById(id);
         return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping("/by-car-type")
+    public ResponseEntity<List<CourierResponseDTO>> getAllByCarType(@RequestParam String carType) {
+        return ResponseEntity.ok(userService.getAllByCarType(carType));
     }
 }

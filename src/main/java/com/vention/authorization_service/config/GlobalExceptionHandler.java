@@ -2,11 +2,11 @@ package com.vention.authorization_service.config;
 
 import com.vention.authorization_service.dto.response.GlobalResponseDTO;
 import com.vention.authorization_service.exception.ConfirmationTokenExpiredException;
-import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.exception.FileConvertingException;
 import com.vention.authorization_service.exception.InvalidFileTypeException;
 import com.vention.authorization_service.exception.LoginFailedException;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
