@@ -1,10 +1,10 @@
 package com.vention.authorization_service.controller;
 
 import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
+import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
-import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

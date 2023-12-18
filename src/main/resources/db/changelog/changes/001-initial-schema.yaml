@@ -197,5 +197,3 @@ databaseChangeLog:
               - column:
                   name: updated_at
                   type: timestamp
-
-
