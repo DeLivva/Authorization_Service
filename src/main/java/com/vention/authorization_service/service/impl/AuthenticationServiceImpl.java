@@ -106,10 +106,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // checks if email or username is used to log in
         if (login.contains("@")) {
             UserEntity userByEmail = userService.getByEmail(userLoginRequestDto.getLogin());
-            return checkUserState(userByEmail);
+            if(userLoginRequestDto.getPassword().equals(userByEmail.getCredentials().getPassword())) {
+                return checkUserState(userByEmail);
+            } else {
+                throw new LoginFailedException("Invalid email or password");
+            }
         } else {
             UserEntity userByUsername = userService.getByUsername(userLoginRequestDto.getLogin());
-            return checkUserState(userByUsername);
+            if(userLoginRequestDto.getPassword().equals(userByUsername.getCredentials().getPassword())) {
+                return checkUserState(userByUsername);
+            } else {
+                throw new LoginFailedException("Invalid username or password");
+            }
         }
     }
 

@@ -41,7 +41,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping
+    @PostMapping("/fill-profile")
     public ResponseEntity<UserUpdateResponseDTO> fillProfile(@Valid @RequestBody UserProfileFillRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.fillProfile(request));
     }
