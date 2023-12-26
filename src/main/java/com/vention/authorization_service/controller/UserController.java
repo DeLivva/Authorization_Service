@@ -6,6 +6,7 @@ import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.CourierResponseDTO;
 import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
+import com.vention.authorization_service.service.SecurityHelperService;
 import com.vention.authorization_service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final SecurityHelperService securityHelperService;
 
     @PutMapping
     public ResponseEntity<UserUpdateResponseDTO> updateUser(@Valid @RequestBody UserUpdateRequestDTO dto) {
@@ -56,6 +58,11 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
         UserResponseDTO userResponse = userService.getById(id);
         return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<UserResponseDTO> getByToken() {
+        return ResponseEntity.ok(securityHelperService.getCurrentUser());
     }
 
     @GetMapping("/by-car-type")
