@@ -28,7 +28,6 @@ jobs:
     needs: build
     name: deploy
     runs-on: ubuntu-latest
-
     steps:
       - name: Download JAR
         uses: actions/download-artifact@v2
@@ -44,4 +43,4 @@ jobs:
           environment_name: Delivva-testing-environment-env
           version_label: ${{ github.SHA }}
           region: us-east-1
-          use_existing_version_if_available: true
+          deployment_package: authorization_service-0.0.1-SNAPSHOT.jar
