@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    @Query(value = "select u from users u where u.email = :email and u.userState != 'DELETED'")
+    @Query(value = "select u.* from users u where u.email = :email and u.user_state != 'DELETED'", nativeQuery = true)
     Optional<UserEntity> findByEmail(String email);
 
     Optional<UserEntity> findByCredentials_Username(String username);
