@@ -42,8 +42,8 @@ cloud:
       name: delivva-auth-bucket
       url: https://delivva-auth-bucket.s3.amazonaws.com/
     credentials:
-      access-key: AKIATYEMUHUZRMOW6WAM
-      secret-key: 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
+      access-key: AKIATYEMUHUZUTBWHYVU
+      secret-key: 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
     region: us-east-1
     stack:
       auto: false
