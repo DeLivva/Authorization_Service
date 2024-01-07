@@ -103,9 +103,6 @@ public class UserServiceImpl implements UserService {
         // change credentials
         SecurityCredentialEntity credentials = user.getCredentials();
         credentials.setUsername(dto.getUsername());
-        if (dto.getPassword() != null) {
-            credentials.setPassword(dto.getPassword());
-        }
         securityCredentialRepository.save(credentials);
 
         // change user
