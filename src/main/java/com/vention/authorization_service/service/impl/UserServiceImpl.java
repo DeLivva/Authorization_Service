@@ -1,5 +1,6 @@
 package com.vention.authorization_service.service.impl;
 
+import com.vention.authorization_service.domain.BaseEntity;
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserState;
@@ -146,5 +147,14 @@ public class UserServiceImpl implements UserService {
     public List<CourierResponseDTO> getAllByCarType(String carType) {
         return repository.getByCarType(carType).stream()
                 .map(userMapper::mapEntityToCourierResponseDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Long> getUsersIdList(boolean isCourier) {
+        if (!isCourier) {
+            return repository.findAll().stream().map(UserEntity::getId).toList();
+        } else {
+            return repository.getAllCouriers().stream().map(UserEntity::getId).toList();
+        }
     }
 }
