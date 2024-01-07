@@ -239,7 +239,6 @@ class UserServiceImplTest {
         request.setLastName("Chan");
         request.setPhoneNumber("123456789");
         request.setUsername("jacky123");
-        request.setPassword("password");
         UserEntity user = new UserEntity();
         SecurityCredentialEntity credentials = new SecurityCredentialEntity();
         user.setCredentials(credentials);
