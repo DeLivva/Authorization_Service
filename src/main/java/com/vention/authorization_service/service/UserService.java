@@ -31,4 +31,6 @@ public interface UserService {
     UserEntity getByUsername(String username);
 
     List<CourierResponseDTO> getAllByCarType(String carType);
+
+    List<Long> getUsersIdList(boolean isCourier);
 }

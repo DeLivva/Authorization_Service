@@ -69,4 +69,9 @@ public class UserController {
     public ResponseEntity<List<CourierResponseDTO>> getAllByCarType(@RequestParam String carType) {
         return ResponseEntity.ok(userService.getAllByCarType(carType));
     }
+
+    @GetMapping("/all-ids")
+    public ResponseEntity<List<Long>> getUsersIdList(@RequestParam boolean isCourier) {
+        return ResponseEntity.ok(userService.getUsersIdList(isCourier));
+    }
 }

@@ -20,4 +20,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             select u.* from users u inner join vehicle v on v.user_id = u.id
             inner join vehicle_type t on t.id = v.type_id and t.name = :car_type""", nativeQuery = true)
     List<UserEntity> getByCarType(@Param("car_type") String carType);
+
+    @Query(value = """
+            select u.* from users u inner join vehicle v on v.user_id = u.id
+            inner join vehicle_type t on t.id = v.type_id""", nativeQuery = true)
+    List<UserEntity> getAllCouriers();
 }
