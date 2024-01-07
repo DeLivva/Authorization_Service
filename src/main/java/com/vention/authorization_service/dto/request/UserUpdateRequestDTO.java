@@ -1,7 +1,6 @@
 package com.vention.authorization_service.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,15 +12,15 @@ public class UserUpdateRequestDTO {
     @NotNull
     private Long userId;
 
-    @Pattern(regexp = "^[A-Za-z]{2,50}$")
+    @NotNull
     private String firstName;
 
-    @Pattern(regexp = "^[A-Za-z]{2,70}$")
+    @NotNull
     private String lastName;
 
-    @Pattern(regexp = "^[a-zA-Z]\\w{3,19}$")
+    @NotNull
     private String username;
 
-    @Pattern(regexp = "^\\d{7,15}$")
+    @NotNull
     private String phoneNumber;
 }
