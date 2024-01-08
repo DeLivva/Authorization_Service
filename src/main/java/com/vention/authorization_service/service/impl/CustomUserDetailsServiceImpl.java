@@ -1,7 +1,7 @@
 package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.UserEntity;
-import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import com.vention.authorization_service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;

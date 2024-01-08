@@ -1,6 +1,5 @@
 package com.vention.authorization_service.service.impl;
 
-import com.vention.authorization_service.domain.BaseEntity;
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserState;
@@ -9,7 +8,6 @@ import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.CourierResponseDTO;
 import com.vention.authorization_service.dto.response.UserResponseDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
-import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.exception.InvalidFileTypeException;
 import com.vention.authorization_service.exception.LoginFailedException;
@@ -19,6 +17,7 @@ import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.service.FileService;
 import com.vention.authorization_service.service.UserService;
 import com.vention.authorization_service.utils.FileUtils;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
