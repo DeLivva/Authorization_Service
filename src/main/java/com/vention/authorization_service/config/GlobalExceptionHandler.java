@@ -6,6 +6,7 @@ import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.exception.FileConvertingException;
 import com.vention.authorization_service.exception.InvalidFileTypeException;
 import com.vention.authorization_service.exception.LoginFailedException;
+import com.vention.general.lib.exceptions.BadRequestException;
 import com.vention.general.lib.exceptions.DataNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class GlobalExceptionHandler {
         return getResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 
-    @ExceptionHandler(value = {DuplicateDataException.class, InvalidFileTypeException.class})
+    @ExceptionHandler(value = {DuplicateDataException.class, InvalidFileTypeException.class, BadRequestException.class})
     public ResponseEntity<GlobalResponseDTO> apiExceptionHandler(RuntimeException e) {
         log.warn(e.getMessage());
         return getResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value());

@@ -2,7 +2,6 @@ package com.vention.authorization_service.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.vention.authorization_service.exception.FileConvertingException;
 import com.vention.authorization_service.service.FileService;
 import lombok.RequiredArgsConstructor;

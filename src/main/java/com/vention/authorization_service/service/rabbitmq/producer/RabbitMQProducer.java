@@ -1,6 +1,7 @@
 package com.vention.authorization_service.service.rabbitmq.producer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vention.authorization_service.dto.NotificationDTO;
 import com.vention.authorization_service.dto.request.ConfirmationTokenDto;
 import com.vention.authorization_service.dto.request.GeneralDto;
 import com.vention.authorization_service.domain.NotificationType;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +33,12 @@ public class RabbitMQProducer {
     private static final Logger log = LoggerFactory.getLogger(RabbitMQProducer.class);
 
     public void sendMessage(String email, String token) {
-        ConfirmationTokenDto confirmationTokenDto = ConfirmationTokenDto.builder().email(email).token(token).build();
-        GeneralDto<ConfirmationTokenDto> generalDto = GeneralDto.<ConfirmationTokenDto>builder().data(confirmationTokenDto).type(NotificationType.CONFIRMATION_TOKEN).build();
+        Map<String, Object> data = new HashMap<>() {{
+            put("email", email);
+            put("token", token);
+        }};
+        NotificationDTO notificationDTO = new NotificationDTO("Please confirm your account before moving forward", email, data);
+        GeneralDto<NotificationDTO> generalDto = GeneralDto.<NotificationDTO>builder().data(notificationDTO).type(NotificationType.CONFIRMATION_TOKEN).build();
         try {
             String json = objectMapper.writeValueAsString(generalDto);
             rabbitTemplate.convertAndSend(
