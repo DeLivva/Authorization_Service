@@ -10,6 +10,7 @@ import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.repository.VehicleRepository;
 import com.vention.authorization_service.repository.VehicleTypeRepository;
 import com.vention.authorization_service.service.VehicleService;
+import com.vention.general.lib.exceptions.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,9 @@ public class VehicleServiceImpl implements VehicleService {
                 .orElseThrow(() -> new DataNotFoundException("Vehicle type not found with id : " + requestDto.getVehicleTypeId()));
         var user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("User not found on id : " + requestDto.getUserId()));
-
+        if (repository.existsByUserId(user.getId())) {
+            throw new BadRequestException("You have already a car");
+        }
         var vehicle = VehicleEntity.builder()
                 .color(requestDto.getColor())
                 .model(requestDto.getModel())

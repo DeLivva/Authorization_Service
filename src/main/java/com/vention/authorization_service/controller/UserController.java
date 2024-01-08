@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping("/all-ids")
-    public ResponseEntity<List<Long>> getUsersIdList(@RequestParam boolean isCourier) {
+    public ResponseEntity<List<Long>> getUsersIdList(@RequestParam Boolean isCourier) {
         return ResponseEntity.ok(userService.getUsersIdList(isCourier));
     }
 }

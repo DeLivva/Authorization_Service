@@ -1,6 +1,5 @@
 package com.vention.authorization_service.service.impl;
 
-import com.vention.authorization_service.domain.BaseEntity;
 import com.vention.authorization_service.domain.SecurityCredentialEntity;
 import com.vention.authorization_service.domain.UserEntity;
 import com.vention.authorization_service.domain.UserState;

@@ -11,4 +11,5 @@ public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
     Optional<VehicleEntity> getByUserId(Long userId);
 
     Optional<VehicleEntity> getByIdAndUserId(Long id, Long userId);
+    boolean existsByUserId(Long userId);
 }
