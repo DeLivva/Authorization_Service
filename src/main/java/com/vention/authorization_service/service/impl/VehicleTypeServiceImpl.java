@@ -2,7 +2,7 @@ package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.VehicleTypeEntity;
 import com.vention.authorization_service.dto.response.VehicleTypeResponseDTO;
-import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import com.vention.authorization_service.mapper.VehicleTypeMapper;
 import com.vention.authorization_service.repository.VehicleTypeRepository;
 import com.vention.authorization_service.service.VehicleTypeService;

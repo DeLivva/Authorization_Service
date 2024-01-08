@@ -7,7 +7,7 @@ import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.UserUpdateResponseDTO;
-import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.exception.LoginFailedException;
 import com.vention.authorization_service.mapper.UserMapper;

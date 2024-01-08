@@ -8,7 +8,6 @@ import com.vention.authorization_service.dto.request.UserLoginRequestDto;
 import com.vention.authorization_service.dto.request.UserRegistrationRequestDTO;
 import com.vention.authorization_service.dto.response.JwtResponse;
 import com.vention.authorization_service.dto.response.UserRegistrationResponseDTO;
-import com.vention.authorization_service.exception.DataNotFoundException;
 import com.vention.authorization_service.exception.DuplicateDataException;
 import com.vention.authorization_service.exception.LoginFailedException;
 import com.vention.authorization_service.mapper.SecurityCredentialMapper;
@@ -18,6 +17,7 @@ import com.vention.authorization_service.service.MailSendingService;
 import com.vention.authorization_service.service.SecurityCredentialService;
 import com.vention.authorization_service.service.UserRoleService;
 import com.vention.authorization_service.service.UserService;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
@@ -27,9 +27,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-
-import java.util.Map;
 
 import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;

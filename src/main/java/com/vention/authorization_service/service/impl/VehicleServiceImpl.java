@@ -4,7 +4,7 @@ import com.vention.authorization_service.domain.VehicleEntity;
 import com.vention.authorization_service.dto.request.VehicleCreationRequestDTO;
 import com.vention.authorization_service.dto.request.VehicleUpdateDTO;
 import com.vention.authorization_service.dto.response.VehicleResponseDTO;
-import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import com.vention.authorization_service.mapper.VehicleMapper;
 import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.repository.VehicleRepository;
