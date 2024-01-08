@@ -94,8 +94,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public JwtResponse loginOAuth(OAuth2AuthenticationToken token) {
-        String email = (String) token.getPrincipal().getAttributes().get("email");
+    public JwtResponse loginOAuth(String email) {
         UserEntity user = userService.getByEmail(email);
         return checkUserState(user);
     }

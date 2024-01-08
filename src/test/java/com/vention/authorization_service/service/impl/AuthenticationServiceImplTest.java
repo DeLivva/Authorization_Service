@@ -210,18 +210,14 @@ class AuthenticationServiceImplTest {
     void testLoginOAuthSuccess() {
         // given
         String userEmail = "test@gmail.com";
-        OAuth2AuthenticationToken oauthToken = mock();
         UserEntity userEntity = new UserEntity();
         userEntity.setUserState(UserState.AUTHORIZED);
-
-        when(oauthToken.getPrincipal()).thenReturn(mock());
-        when(oauthToken.getPrincipal().getAttributes()).thenReturn(Map.of("email", userEmail));
 
         when(userService.getByEmail(userEmail)).thenReturn(userEntity);
         when(jwtService.generateAccessToken(any(UserEntity.class))).thenReturn("testToken");
 
         // when
-        JwtResponse result = authenticationService.loginOAuth(oauthToken);
+        JwtResponse result = authenticationService.loginOAuth(userEmail);
 
         // Then
         assertNotNull(result);
@@ -232,14 +228,10 @@ class AuthenticationServiceImplTest {
     void testLoginOAuthNotFoundFail() {
         // when
         String userEmail = "test@gmail.com";
-        OAuth2AuthenticationToken oauthToken = mock();
-
-        when(oauthToken.getPrincipal()).thenReturn(mock());
-        when(oauthToken.getPrincipal().getAttributes()).thenReturn(Map.of("email", userEmail));
 
         when(userService.getByEmail(userEmail)).thenThrow(DataNotFoundException.class);
         // then
-        assertThrows(DataNotFoundException.class, () -> authenticationService.loginOAuth(oauthToken));
+        assertThrows(DataNotFoundException.class, () -> authenticationService.loginOAuth(userEmail));
     }
 
     @Test
