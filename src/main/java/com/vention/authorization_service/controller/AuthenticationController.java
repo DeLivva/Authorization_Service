@@ -48,7 +48,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login-oauth")
-    public ResponseEntity<JwtResponse> loginOauth(OAuth2AuthenticationToken token) {
-        return ResponseEntity.status(HttpStatus.OK).body(authenticationService.loginOAuth(token));
+    public ResponseEntity<JwtResponse> loginOauth(@RequestParam String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(authenticationService.loginOAuth(email));
     }
 }
