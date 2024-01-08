@@ -38,7 +38,7 @@ public class RabbitMQProducer {
             put("token", token);
         }};
         NotificationDTO notificationDTO = new NotificationDTO("Please confirm your account before moving forward", email, data);
-        GeneralDto<NotificationDTO> generalDto = GeneralDto.<NotificationDTO>builder().data(notificationDTO).type(NotificationType.CONFIRMATION_TOKEN).build();
+        GeneralDto<NotificationDTO> generalDto = GeneralDto.<NotificationDTO>builder().body(notificationDTO).type(NotificationType.CONFIRMATION_TOKEN).build();
         try {
             String json = objectMapper.writeValueAsString(generalDto);
             rabbitTemplate.convertAndSend(
