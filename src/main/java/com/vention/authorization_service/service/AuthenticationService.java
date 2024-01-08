@@ -15,7 +15,7 @@ public interface AuthenticationService {
 
     void sendConfirmationToken(String email);
 
-    JwtResponse loginOAuth(OAuth2AuthenticationToken token);
+    JwtResponse loginOAuth(String email);
 
     JwtResponse login(UserLoginRequestDto userLoginRequestDto);
 
