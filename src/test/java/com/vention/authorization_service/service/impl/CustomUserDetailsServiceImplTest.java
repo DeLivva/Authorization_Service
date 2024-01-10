@@ -1,6 +1,6 @@
 package com.vention.authorization_service.service.impl;
 
-import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

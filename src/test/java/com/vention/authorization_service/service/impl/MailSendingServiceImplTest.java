@@ -1,7 +1,7 @@
 package com.vention.authorization_service.service.impl;
 
 import com.vention.authorization_service.domain.ConfirmationToken;
-import com.vention.authorization_service.exception.DataNotFoundException;
+import com.vention.general.lib.exceptions.DataNotFoundException;
 import com.vention.authorization_service.service.rabbitmq.producer.RabbitMQProducer;
 import com.vention.authorization_service.repository.ConfirmationTokenRepository;
 import com.vention.authorization_service.service.MailSendingService;

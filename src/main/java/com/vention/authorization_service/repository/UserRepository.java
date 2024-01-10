@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = """
             select u.* from users u inner join vehicle v on v.user_id = u.id
-            inner join vehicle_type t on t.id = v.type_id and t.name = :car_type""", nativeQuery = true)
+            inner join vehicle_type t on t.id = v.type_id and t.name = :car_type where user_state <> 'DELETED'""", nativeQuery = true)
     List<UserEntity> getByCarType(@Param("car_type") String carType);
 
     @Query(value = """
