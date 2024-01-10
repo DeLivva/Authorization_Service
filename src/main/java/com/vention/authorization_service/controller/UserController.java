@@ -74,4 +74,9 @@ public class UserController {
     public ResponseEntity<List<Long>> getUsersIdList(@RequestParam Boolean isCourier) {
         return ResponseEntity.ok(userService.getUsersIdList(isCourier));
     }
+
+    @GetMapping("/admin-emails")
+    public ResponseEntity<List<String>> getAllAdminEmails() {
+        return ResponseEntity.ok(userService.getAllAdminEmails());
+    }
 }

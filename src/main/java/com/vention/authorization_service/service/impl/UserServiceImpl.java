@@ -157,4 +157,9 @@ public class UserServiceImpl implements UserService {
             return repository.getAllCouriers().stream().map(UserEntity::getId).toList();
         }
     }
+
+    @Override
+    public List<String> getAllAdminEmails() {
+        return repository.getAllAdminEmails();
+    }
 }

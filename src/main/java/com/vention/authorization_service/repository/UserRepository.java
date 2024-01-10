@@ -25,4 +25,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             select u.* from users u inner join vehicle v on v.user_id = u.id
             inner join vehicle_type t on t.id = v.type_id""", nativeQuery = true)
     List<UserEntity> getAllCouriers();
+
+    @Query(value = """
+            select u.email from users u
+                     inner join security_credentials sc on u.credential_id = sc.id
+                     inner join user_roles ur on sc.role_id = ur.id
+            where ur.name = 'ADMIN'""", nativeQuery = true)
+    List<String> getAllAdminEmails();
 }
