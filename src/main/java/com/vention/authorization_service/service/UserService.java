@@ -33,4 +33,6 @@ public interface UserService {
     List<CourierResponseDTO> getAllByCarType(String carType);
 
     List<Long> getUsersIdList(boolean isCourier);
+
+    List<String> getAllAdminEmails();
 }
