@@ -17,6 +17,7 @@ import com.vention.authorization_service.repository.UserRepository;
 import com.vention.authorization_service.service.FileService;
 import com.vention.authorization_service.service.UserService;
 import com.vention.authorization_service.utils.FileUtils;
+import com.vention.general.lib.exceptions.BadRequestException;
 import com.vention.general.lib.exceptions.DataNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -99,6 +101,11 @@ public class UserServiceImpl implements UserService {
         UserEntity user = repository.findById(dto.getUserId()).orElseThrow(
                 () -> new DataNotFoundException("User with this id not found: " + dto.getUserId())
         );
+
+        Optional<UserEntity> userByUsername = repository.findByCredentials_Username(dto.getUsername());
+        if(userByUsername.isPresent() && !userByUsername.get().getId().equals(user.getId())){
+            throw new BadRequestException("Username already exists");
+        }
 
         // change credentials
         SecurityCredentialEntity credentials = user.getCredentials();
