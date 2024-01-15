@@ -43,9 +43,9 @@ public class VehicleController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
-        service.delete(id);
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> delete(@RequestParam Long carId) {
+        service.delete(carId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
