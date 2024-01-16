@@ -1,5 +1,6 @@
 package com.vention.authorization_service.controller;
 
+import com.vention.authorization_service.domain.UserState;
 import com.vention.authorization_service.dto.request.UserDeleteRequestDTO;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
@@ -78,5 +79,10 @@ public class UserController {
     @GetMapping("/admin-emails")
     public ResponseEntity<List<String>> getAllAdminEmails() {
         return ResponseEntity.ok(userService.getAllAdminEmails());
+    }
+
+    @GetMapping("/active-users")
+    public ResponseEntity<Long> getAllActiveUsersCount() {
+        return ResponseEntity.ok(userService.getAllActiveUsers(UserState.AUTHORIZED));
     }
 }

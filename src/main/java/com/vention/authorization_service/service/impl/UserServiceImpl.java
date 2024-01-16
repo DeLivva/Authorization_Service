@@ -168,4 +168,9 @@ public class UserServiceImpl implements UserService {
     public List<String> getAllAdminEmails() {
         return repository.getAllAdminEmails();
     }
+
+    @Override
+    public Long getAllActiveUsers(UserState userState) {
+        return repository.countAllByUserState(userState).orElse(0L);
+    }
 }
