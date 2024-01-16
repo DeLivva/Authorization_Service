@@ -1,6 +1,7 @@
 package com.vention.authorization_service.repository;
 
 import com.vention.authorization_service.domain.UserEntity;
+import com.vention.authorization_service.domain.UserState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,4 +33,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                      inner join user_roles ur on sc.role_id = ur.id
             where ur.name = 'ADMIN'""", nativeQuery = true)
     List<String> getAllAdminEmails();
+
+    Optional<Long> countAllByUserState(UserState userState);
 }

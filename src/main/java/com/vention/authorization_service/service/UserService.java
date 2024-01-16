@@ -1,6 +1,7 @@
 package com.vention.authorization_service.service;
 
 import com.vention.authorization_service.domain.UserEntity;
+import com.vention.authorization_service.domain.UserState;
 import com.vention.authorization_service.dto.request.UserProfileFillRequestDTO;
 import com.vention.authorization_service.dto.request.UserUpdateRequestDTO;
 import com.vention.authorization_service.dto.response.CourierResponseDTO;
@@ -35,4 +36,6 @@ public interface UserService {
     List<Long> getUsersIdList(boolean isCourier);
 
     List<String> getAllAdminEmails();
+
+    Long getAllActiveUsers(UserState userState);
 }
